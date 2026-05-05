@@ -12,16 +12,19 @@ A comprehensive, extensible Typst template for theses and dissertations at the U
 ## How to Use
 
 ### 1. Initialize a new project
+
 If this package is installed in your Typst local packages or the Universe, you can use:
+
+> [!WARNING]
+> This package is not in preview yet, so we need to install it locally first. See instructions below.
+
 ```bash
-typst init @preview/usp-thesis:0.1.0
+typst init @local/usp-thesis:0.1.0
 ```
 
-### 2. Manual Setup
-Copy the `src/` directory to your project and import it:
 
 ```typst
-#import "src/lib.typ": usp-thesis
+#import "@local/usp-thesis:0.1.0": usp-thesis
 
 #show: usp-thesis.with(
   title: [Your Thesis Title],
