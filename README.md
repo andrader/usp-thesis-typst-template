@@ -74,5 +74,33 @@ let nature-text = if institute.contains("Your Institute") {
 }
 ```
 
+## How to install this package locally
+
+To install this Typst package locally for development or testing, create symlinks as follows (macOS example):
+
+```sh
+mkdir -p ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0
+ln -s "$PWD/src" "~/Library/Application Support/typst/packages/local/usp-thesis/0.1.0/src"
+ln -s "$PWD/typst.toml" "~/Library/Application Support/typst/packages/local/usp-thesis/0.1.0/typst.toml"
+```
+
+Then, in your Typst files, import the package with:
+
+```typst
+#import "@local/usp-thesis:0.1.0": *
+```
+
+---
+
+You can store packages in {data-dir}/typst/packages/{namespace}/{name}/{version} to make them available locally on your system. Here, {data-dir} is
+
+$XDG_DATA_HOME or ~/.local/share on Linux
+~/Library/Application Support on macOS
+%APPDATA% on Windows
+You may also run typst info and check Package path for the actual path. This would be helpful if you have installed the Typst compiler from Snap or are using special environment variables.
+
+
+
+
 ## License
 MIT
