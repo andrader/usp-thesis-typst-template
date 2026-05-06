@@ -79,6 +79,17 @@
       tables: "Lista de Tabelas",
       abbreviations: "Lista de Abreviaturas e Siglas",
       symbols: "Lista de Símbolos",
+      abstract-title: "RESUMO",
+      abstract-title-en: "ABSTRACT",
+      keywords: "Palavras-chave: ",
+      area: "Área de Concentração: ",
+      labels: (
+        author: "Autor",
+        title: "Título",
+        approved-on: "Aprovado em",
+        banca: "Banca Examinadora",
+        judgement: "Julgamento",
+      ),
     ),
     en: (
       version: " Version",
@@ -92,6 +103,17 @@
       tables: "List of Tables",
       abbreviations: "List of Abbreviations and Acronyms",
       symbols: "List of Symbols",
+      abstract-title: "RESUMO",
+      abstract-title-en: "ABSTRACT",
+      keywords: "Keywords: ",
+      area: "Concentration Area: ",
+      labels: (
+        author: "Author",
+        title: "Title",
+        approved-on: "Approved on",
+        banca: "Examination Committee",
+        judgement: "Judgement",
+      ),
     ),
   ).at(lang)
 
@@ -104,18 +126,30 @@
 
   // IMEUSP specific nature text
   let nature-text = if institute.contains("Matemática e Estatística") {
-    if degree == "Mestre" {
-      "Dissertação apresentada para o IME-USP para obtenção do grau de mestre"
+    if lang == "pt" {
+      if degree == "Mestre" {
+        "Dissertação apresentada para o IME-USP para obtenção do grau de mestre"
+      } else {
+        "Tese apresentada para o IME-USP para obtenção do grau de doutor"
+      }
     } else {
-      "Tese apresentada para o IME-USP para obtenção do grau de doutor"
+      if degree == "Mestre" {
+        "Master's Dissertation presented to IME-USP in order to obtain the degree of Master"
+      } else {
+        "Doctoral Thesis presented to IME-USP in order to obtain the degree of Doctor"
+      }
     }
   } else {
-    actual-nature + " apresentada ao " + institute + " da Universidade de São Paulo para obtenção do título de " + degree + " em " + program
+    if lang == "pt" {
+      actual-nature + " apresentada ao " + institute + " da Universidade de São Paulo para obtenção do título de " + degree + " em " + program
+    } else {
+      actual-nature + " presented to " + institute + " of the University of São Paulo in order to obtain the degree of " + degree + " in " + program
+    }
   }
 
   // 1. Cover
   cover(
-    institution: "Universidade de São Paulo\n" + institute,
+    institution: if lang == "pt" { "Universidade de São Paulo\n" + institute } else { "University of São Paulo\n" + institute },
     author: author,
     title: title,
     subtitle: subtitle,
@@ -134,6 +168,7 @@
     degree: degree,
     program: program,
     area: area,
+    area-label: i18n.area,
     advisor: i18n.advisor + advisor,
     coadvisor: if coadvisor != none { i18n.coadvisor + coadvisor } else { none },
     local: local,
@@ -157,6 +192,7 @@
       subtitle: subtitle,
       nature: nature-text,
       banca: banca,
+      labels: i18n.labels,
     )
   }
 
@@ -185,19 +221,19 @@
 
   if abstract-pt != none {
     abstract-page(
-      title: "RESUMO",
-      lang: "pt",
-      keywords: keywords-pt,
-      abstract-pt
+      i18n.abstract-title,
+      abstract-pt,
+      keywords-list: keywords-pt,
+      keywords-label: if lang == "pt" { i18n.keywords } else { "Palavras-chave: " },
     )
   }
 
   if abstract-en != none {
     abstract-page(
-      title: "ABSTRACT",
-      lang: "en",
-      keywords: keywords-en,
-      abstract-en
+      i18n.abstract-title-en,
+      abstract-en,
+      keywords-list: keywords-en,
+      keywords-label: if lang == "en" { i18n.keywords } else { "Keywords: " },
     )
   }
   

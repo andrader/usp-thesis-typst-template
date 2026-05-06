@@ -50,6 +50,7 @@
   degree: none,
   program: none,
   area: none,
+  area-label: "Área de Concentração: ",
   advisor: none,
   coadvisor: none,
   local: none,
@@ -77,10 +78,10 @@
       #set text(size: 10pt)
       #nature
       
-      #if area != none [Área de Concentração: #area]
+      #if area != none [#area-label #area]
       
-      Orientador: #advisor
-      #if coadvisor != none [\ Coorientador: #coadvisor]
+      #advisor
+      #if coadvisor != none [\ #coadvisor]
     ]
   ]
 
@@ -97,13 +98,20 @@
   nature: none,
   date: "____/____/____",
   banca: (),
+  labels: (
+    author: "Autor",
+    title: "Título",
+    approved-on: "Aprovado em",
+    banca: "Banca Examinadora",
+    judgement: "Julgamento",
+  ),
   is-branded: false,
 ) = {
   set page(margin: 3cm)
   set text(size: 12pt)
   
-  [Autor: #author \ ]
-  [Título: #strong(title)]
+  [#labels.author: #author \ ]
+  [#labels.title: #strong(title)]
   if subtitle != none [: #strong(subtitle)]
   
   v(1cm)
@@ -111,10 +119,10 @@
   if not nature.ends-with(".") [.]
   
   v(1cm)
-  [Aprovado em: #date]
+  [#labels.approved-on: #date]
   
   v(1cm)
-  align(center)[Banca Examinadora]
+  align(center)[#labels.banca]
   v(0.5cm)
   
   for membro in banca [
@@ -122,18 +130,18 @@
     #line(length: 100%, stroke: 0.5pt)
     #membro.nome \
     #membro.instituicao \
-    Julgamento: #line(length: 3cm, stroke: 0.5pt)
+    #labels.judgement: #line(length: 3cm, stroke: 0.5pt)
   ]
   
   pagebreak()
 }
 
 #let abstract-page(
-  title: "RESUMO",
-  lang: "pt",
+  title,
+  body,
+  keywords-list: (),
+  keywords-label: "Palavras-chave: ",
   reference: none,
-  keywords: (),
-  body
 ) = {
   set align(center)
   strong(title)
@@ -150,8 +158,8 @@
   body
   
   v(1cm)
-  strong([Palavras-chave: ])
-  keywords.join([. ])
+  strong([#keywords-label])
+  keywords-list.join([. ])
   [.]
   
   pagebreak()
