@@ -11,16 +11,56 @@ A comprehensive, extensible Typst template for theses and dissertations at the U
 
 - [USP Thesis Typst Template](#usp-thesis-typst-template)
   - [Features](#features)
-  - [How to Use](#how-to-use)
-    - [1. Install the Package](#1-install-the-package)
-      - [MacOS](#macos)
-      - [Linux](#linux)
-      - [Windows](#windows)
-    - [1. Initialize a new project](#1-initialize-a-new-project)
+  - [Prerequisites](#prerequisites)
+  - [Install the Package](#install-the-package)
+    - [MacOS](#macos)
+    - [Linux](#linux)
+    - [Windows](#windows)
+  - [Initialize a new project](#initialize-a-new-project)
   - [Configuration Options](#configuration-options)
   - [Future Extensions](#future-extensions)
   - [Development and Testing](#development-and-testing)
   - [License](#license)
+
+
+## Prerequisites
+
+- [Typst Compiler](https://typst.app/) installed on your system. The Typst is the open-source software that translates your Typst markup to PDFs.
+
+  <details>
+    <summary>How to install [Click to expand]</summary>
+
+    ### MacOS
+
+    Open Terminal and run:
+
+    ```bash
+    brew install typst
+    ```
+
+    ### Linux
+
+    Open Terminal and run:
+
+    ```bash
+    # For Debian/Ubuntu-based distributions
+    sudo apt install typst
+    # For Fedora-based distributions
+    sudo dnf install typst
+    # Snap
+    sudo snap install typst
+    ```
+
+    ### Windows
+
+    Open PowerShell and run:
+
+    ```powershell
+    winget install typst
+    ```
+
+  </details>
+
 
 
 
@@ -51,12 +91,26 @@ git clone https://github.com/andrader/usp-thesis-typst-template $env:APPDATA\typ
 
 ## Initialize a new project
 
-In your Typst project, initialize the package with:
+In your Typst project, on your terminal initialize the template with:
 
-```typst
+```bash
 typst init @local/usp-thesis:0.1.0
 ```
 
+Then, you can generate the PDF with:
+
+```bash
+cd usp-thesis
+typst compile main.typ
+```
+
+To watch for changes and recompile automatically:
+
+```bash
+typst watch main.typ
+```
+
+## Example Usage
 
 ```typst
 #import "@local/usp-thesis:0.1.0": usp-thesis
