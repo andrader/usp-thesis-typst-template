@@ -1,4 +1,4 @@
-#import "/src/lib.typ": usp-thesis
+#import "/src/usp-thesis.typ": usp-thesis
 
 #show: usp-thesis.with(
   title: [Título da Sua Tese],
