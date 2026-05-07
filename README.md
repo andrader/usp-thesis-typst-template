@@ -16,7 +16,7 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
   - [Features](#features)
   - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
-  - [Install the Package](#install-the-package)
+  - [Install the Template Package](#install-the-template-package)
     - [MacOS](#macos)
     - [Linux](#linux)
     - [Windows](#windows)
@@ -29,10 +29,10 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
 
 ## Prerequisites
 
-- [Typst Compiler](https://typst.app/) installed on your system. The Typst is the open-source software that translates your Typst markup to PDFs.
+- [Typst Compiler](https://typst.app/): Typst is a modern, faster, and more intuitive typesetting alternative to LaTeX, featuring cleaner syntax and instant compilation, making it ideal for new projects. 
 
   <details>
-    <summary>How to install [Click to expand]</summary>
+    <summary>*[Click to expand] How to install*</summary>
 
     ### MacOS
 
@@ -68,9 +68,7 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
 
 
 
-## Install the Package
-> [!WARNING]
-> This package is not in preview yet, so we need to install it locally first. See instructions below.
+## Install the Template Package
 
 ### MacOS
 
