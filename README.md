@@ -4,7 +4,7 @@ A comprehensive, extensible Typst template for theses and dissertations at the U
 
 Example output PDF generated with this template: [usp-example.pdf](examples/usp-example.pdf)
 
-## Features
+## Features ✨
 - **Official Layout**: Correct margins (3cm/2cm), A4 size, and 1.5 line spacing.
 - **Automated Elements**: Generates Cover, Title Page, Approval Sheet, and Abstracts.
 - **IMEUSP Support**: Specific branding and "Standard Statement" for the Institute of Mathematics and Statistics.
@@ -13,13 +13,13 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
 
 ## Table of Contents
 - [USP Thesis Typst Template](#usp-thesis-typst-template)
-  - [Features](#features)
+  - [Features ✨](#features-)
   - [Table of Contents](#table-of-contents)
-  - [Prerequisites](#prerequisites)
+  - [Prerequisites 📋](#prerequisites-)
   - [Install the Template Package](#install-the-template-package)
-    - [MacOS](#macos)
-    - [Linux](#linux)
-    - [Windows](#windows)
+    - [MacOS 🍎](#macos-)
+    - [Linux 🐧](#linux-)
+    - [Windows ⊞](#windows-)
   - [Initialize a new project](#initialize-a-new-project)
   - [Example Usage](#example-usage)
   - [Configuration Options](#configuration-options)
@@ -27,12 +27,12 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
   - [Development and Testing](#development-and-testing)
   - [License](#license)
 
-## Prerequisites
+## Prerequisites 📋
 
 - [Typst Compiler](https://typst.app/): Typst is a modern, faster, and more intuitive typesetting alternative to LaTeX, featuring cleaner syntax and instant compilation, making it ideal for new projects. 
 
   <details>
-    <summary>*[Click to expand] How to install*</summary>
+    <summary><b>[Click to expand] How to install Typst ⚙️</b></summary>
 
     ### MacOS
 
@@ -70,21 +70,21 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
 
 ## Install the Template Package
 
-### MacOS
+### MacOS 🍎
 
 ```bash
 # Clone the repository at the correct location for local Typst packages
 git clone https://github.com/andrader/usp-thesis-typst-template ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0/
 ```
 
-### Linux
+### Linux 🐧
 
 ```bash
 # Clone the repository at the correct location for local Typst packages
 git clone https://github.com/andrader/usp-thesis-typst-template ~/.local/share/typst/packages/local/usp-thesis/0.1.0/
 ```
 
-### Windows
+### Windows ⊞
 
 ```powershell
 # Clone the repository at the correct location for local Typst packages
