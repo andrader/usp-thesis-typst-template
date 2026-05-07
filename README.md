@@ -2,6 +2,8 @@
 
 A comprehensive, extensible Typst template for theses and dissertations at the University of São Paulo (USP) and specifically the Institute of Mathematics and Statistics (IMEUSP), following the official guidelines (5th edition, 2024).
 
+Example output PDF generated with this template: [usp-example.pdf](examples/usp-example.pdf)
+
 ## Features
 - **Official Layout**: Correct margins (3cm/2cm), A4 size, and 1.5 line spacing.
 - **Automated Elements**: Generates Cover, Title Page, Approval Sheet, and Abstracts.
@@ -9,19 +11,21 @@ A comprehensive, extensible Typst template for theses and dissertations at the U
 - **Extensible**: Easily adaptable to other USP institutes.
 - **Pre-textual Elements**: Support for Dedication, Acknowledgments, and Epigraph.
 
+## Table of Contents
 - [USP Thesis Typst Template](#usp-thesis-typst-template)
   - [Features](#features)
+  - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
   - [Install the Package](#install-the-package)
     - [MacOS](#macos)
     - [Linux](#linux)
     - [Windows](#windows)
   - [Initialize a new project](#initialize-a-new-project)
+  - [Example Usage](#example-usage)
   - [Configuration Options](#configuration-options)
   - [Future Extensions](#future-extensions)
   - [Development and Testing](#development-and-testing)
   - [License](#license)
-
 
 ## Prerequisites
 
