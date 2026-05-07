@@ -1,5 +1,8 @@
 #import "../src/lib.typ": usp-thesis
 
+// Latex-style font
+#set text(font: "New Computer Modern")
+
 #show: usp-thesis.with(
   title: [Título da Sua Tese],
   author: "Seu Nome",

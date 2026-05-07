@@ -1,5 +1,8 @@
 #import "../src/lib.typ": usp-thesis
 
+// Latex-style font
+#set text(font: "New Computer Modern")
+
 #show: usp-thesis.with(
   title: [Desenvolvimento de Templates Typst para a USP],
   title-alt: [Development of Typst Templates for USP],
@@ -54,6 +57,8 @@
     (nome: "Prof. Dr. Examinador Externo", instituicao: "UNICAMP"),
   ),
 )
+
+
 
 = Introdução
 
