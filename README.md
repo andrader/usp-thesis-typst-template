@@ -175,10 +175,16 @@ let nature-text = if institute.contains("Your Institute") {
 To install this Typst package locally for development or testing, create symlinks as follows (macOS example):
 
 ```sh
-mkdir -p ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0
-ln -s "$PWD/src" "~/Library/Application Support/typst/packages/local/usp-thesis/0.1.0/src"
-ln -s "$PWD/typst.toml" "~/Library/Application Support/typst/packages/local/usp-thesis/0.1.0/typst.toml"
+# Create the necessary directories if they don't exist
+mkdir -p ~/Library/Application\ Support/typst/packages/local/usp-thesis/
+# Create a symbolic link to the current directory
+ln -sfn $PWD ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0
+# Verify the files are correctly linked
+ls -l ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0
 ```
+
+
+
 
 Then, in your Typst files, import the package with:
 
