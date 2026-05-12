@@ -32,8 +32,6 @@
       [10], [5], [Typstt], [Typst],
     )
   ],
-  list-of-figures: true,
-  list-of-tables: true,
   abbreviations: [
     #grid(
       columns: (100pt, 1fr),
