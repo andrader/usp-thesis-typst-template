@@ -25,8 +25,8 @@
 /// - acknowledgments (content): Optional acknowledgments.
 /// - epigraph (content): Optional epigraph.
 /// - errata (content): Optional errata content.
-/// - list-of-figures (bool): Whether to include the list of figures.
-/// - list-of-tables (bool): Whether to include the list of tables.
+/// - list-of-figures (bool): Whether to include the list of figures (auto: show if >= 5).
+/// - list-of-tables (bool): Whether to include the list of tables (auto: show if >= 5).
 /// - abbreviations (content): Optional list of abbreviations.
 /// - symbols (content): Optional list of symbols.
 /// - banca (array): List of jury member dictionaries ((nome: "", instituicao: "")).
@@ -55,8 +55,8 @@
   acknowledgments: none,
   epigraph: none,
   errata: none,
-  list-of-figures: false,
-  list-of-tables: false,
+  list-of-figures: auto,
+  list-of-tables: auto,
   abbreviations: none,
   symbols: none,
   banca: (),
@@ -81,6 +81,7 @@
       symbols: "Lista de Símbolos",
       abstract-title: "RESUMO",
       abstract-title-en: "ABSTRACT",
+      summary-title: "Sumário",
       keywords: "Palavras-chave: ",
       area: "Área de Concentração: ",
       labels: (
@@ -105,6 +106,7 @@
       symbols: "List of Symbols",
       abstract-title: "RESUMO",
       abstract-title-en: "ABSTRACT",
+      summary-title: "Contents",
       keywords: "Keywords: ",
       area: "Concentration Area: ",
       labels: (
@@ -157,6 +159,9 @@
     year: year,
   )
 
+  // Page numbering starts counting from title page (ABNT)
+  counter(page).update(1)
+
   // 2. Title Page
   title-page(
     author: author,
@@ -175,10 +180,15 @@
     year: year,
   )
   
+  // Setup layout for pre-textual elements (margins and heading styles)
+  show: setup-layout.with(lang: lang)
+  
+  // Hide page numbering until Introduction
+  set page(numbering: none)
+
   // 3. Errata (Optional)
   if errata != none {
-    set page(margin: 3cm)
-    align(center, strong[#i18n.errata])
+    heading(level: 1, numbering: none, outlined: false)[#i18n.errata]
     v(1cm)
     errata
     pagebreak()
@@ -198,22 +208,19 @@
 
   // 5. Pre-textual elements
   if dedication != none {
-    set page(margin: 3cm)
     v(1fr)
     align(right)[#box(width: 60%, dedication)]
     pagebreak()
   }
 
   if acknowledgments != none {
-    set page(margin: 3cm)
-    align(center, strong[#i18n.acknowledgments])
+    heading(level: 1, numbering: none, outlined: false)[#i18n.acknowledgments]
     v(1cm)
     acknowledgments
     pagebreak()
   }
 
   if epigraph != none {
-    set page(margin: 3cm)
     v(1fr)
     align(right)[#box(width: 60%, epigraph)]
     pagebreak()
@@ -237,41 +244,50 @@
     )
   }
   
-  // Lists
-  if list-of-figures {
-    outline(title: i18n.figures, target: figure.where(kind: image))
-    pagebreak()
-  }
-  
-  if list-of-tables {
-    outline(title: i18n.tables, target: figure.where(kind: table))
-    pagebreak()
+  // Lists (Conditional)
+  context {
+    let figures = query(figure.where(kind: image))
+    let tables = query(figure.where(kind: table))
+    
+    let show-figures = if list-of-figures == auto { figures.len() >= 5 } else { list-of-figures }
+    let show-tables = if list-of-tables == auto { tables.len() >= 5 } else { list-of-tables }
+    
+    if show-figures {
+      heading(level: 1, numbering: none, outlined: false)[#i18n.figures]
+      outline(title: none, target: figure.where(kind: image))
+      pagebreak()
+    }
+    
+    if show-tables {
+      heading(level: 1, numbering: none, outlined: false)[#i18n.tables]
+      outline(title: none, target: figure.where(kind: table))
+      pagebreak()
+    }
   }
   
   if abbreviations != none {
-    align(center, strong[#i18n.abbreviations])
+    heading(level: 1, numbering: none, outlined: false)[#i18n.abbreviations]
     v(1cm)
     abbreviations
     pagebreak()
   }
   
   if symbols != none {
-    align(center, strong[#i18n.symbols])
+    heading(level: 1, numbering: none, outlined: false)[#i18n.symbols]
     v(1cm)
     symbols
     pagebreak()
   }
 
-  // Table of Contents
-  outline(title: auto, indent: auto)
+  // Table of Contents (Sumário) - Must be the last pre-textual element
+  heading(level: 1, numbering: none, outlined: false)[#i18n.summary-title]
+  outline(title: none, indent: auto)
   pagebreak()
 
-  // 6. Main Content Layout
-  show: setup-layout.with(lang: lang)
+  // --- Start of Textual Elements ---
   
-  // Page numbering starts counting from title page (page 2), but visible from here
+  // Show page numbering from here
   set page(numbering: "1", number-align: right + top)
-  counter(page).update(1)
 
   body
 }

@@ -143,9 +143,7 @@
   keywords-label: "Palavras-chave: ",
   reference: none,
 ) = {
-  set align(center)
-  strong(title)
-  v(1cm)
+  heading(level: 1, numbering: none, outlined: false)[#title]
   
   set align(left)
   if reference != none {

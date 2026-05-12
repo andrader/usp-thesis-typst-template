@@ -32,15 +32,42 @@
   set heading(numbering: "1.1.1.1.1")
   
   // Section styling
-  show heading: it => {
-    let size = if it.level == 1 { 14pt } else { 12pt }
-    set text(size: size, weight: "bold")
-    if it.level == 1 {
-      pagebreak(weak: true)
-      v(1.5cm)
-    }
-    it
+  show heading.where(level: 1): it => {
+    pagebreak(weak: true)
     v(1.5cm)
+    set text(size: 14pt, weight: "bold")
+    if it.numbering == none {
+      // Pre-textual elements: Centered and All Caps
+      align(center, upper(it.body))
+    } else {
+      // Textual chapters: Bold, 14pt, keep case as provided
+      it
+    }
+    v(1.5cm)
+  }
+
+  show heading.where(level: 2): it => {
+    v(1em)
+    set text(size: 12pt, weight: "bold")
+    it
+    v(0.5em)
+  }
+
+  show heading.where(level: 3): it => {
+    v(0.5em)
+    set text(size: 12pt, weight: "bold")
+    it
+    v(0.5em)
+  }
+
+  // Table of Contents styling
+  show outline.entry.where(level: 1): it => {
+    v(1em, weak: true)
+    if it.element.func() == heading and it.element.numbering == none {
+      strong(upper(it))
+    } else {
+      strong(it)
+    }
   }
 
   // Captions and Tables

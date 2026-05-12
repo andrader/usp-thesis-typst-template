@@ -153,6 +153,8 @@ The `usp-thesis` function accepts the following parameters:
 | `program` | string | Name of the graduate program. |
 | `version` | string | "Original" or "Corrigida" (Default: "Original"). |
 | `banca` | array | List of dictionaries `(nome: "", instituicao: "")` for the jury. |
+| `list-of-figures` | bool / auto | Whether to include the list of figures (auto: show if >= 5). |
+| `list-of-tables` | bool / auto | Whether to include the list of tables (auto: show if >= 5). |
 | `abstract-pt` | content | Abstract in Portuguese. |
 | `abstract-en` | content | Abstract in English. |
 
