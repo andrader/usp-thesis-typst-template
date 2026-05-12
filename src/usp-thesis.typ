@@ -84,6 +84,8 @@
       summary-title: "Sumário",
       keywords: "Palavras-chave: ",
       area: "Área de Concentração: ",
+      title-msc: "Mestre em Ciências",
+      title-phd: "Doutor em Ciências",
       labels: (
         author: "Autor",
         title: "Título",
@@ -109,6 +111,8 @@
       summary-title: "Contents",
       keywords: "Keywords: ",
       area: "Concentration Area: ",
+      title-msc: "Master of Science",
+      title-phd: "Doctor of Science",
       labels: (
         author: "Author",
         title: "Title",
@@ -119,26 +123,30 @@
     ),
   ).at(lang)
 
-  // Infer nature if not provided
+  // Infer nature and institute-specifics
+  // We check for "Mestre" or "Master" to identify Master's degrees
+  let is-msc = degree.contains(regex("Mestre|Master"))
+  let is-ime = institute.contains(regex("Matemática e Estatística|Mathematics and Statistics"))
+
   let actual-nature = if nature != none { nature } 
-                      else if degree == "Mestre" { i18n.nature-msc } 
+                      else if is-msc { i18n.nature-msc } 
                       else { i18n.nature-phd }
 
   let version-text = version + i18n.version
 
   // IMEUSP specific nature text
-  let nature-text = if institute.contains("Matemática e Estatística") {
+  let nature-text = if is-ime {
     if lang == "pt" {
-      if degree == "Mestre" {
-        "Dissertação apresentada para o IME-USP para obtenção do grau de mestre"
+      if is-msc {
+        "Dissertação apresentada ao IME-USP para obtenção do título de " + i18n.title-msc + ". Programa: " + program
       } else {
-        "Tese apresentada para o IME-USP para obtenção do grau de doutor"
+        "Tese apresentada ao IME-USP para obtenção do título de " + i18n.title-phd + ". Programa: " + program
       }
     } else {
-      if degree == "Mestre" {
-        "Master's Dissertation presented to IME-USP in order to obtain the degree of Master"
+      if is-msc {
+        "Master's Dissertation presented to IME-USP in order to obtain the title of " + i18n.title-msc + ". Program: " + program
       } else {
-        "Doctoral Thesis presented to IME-USP in order to obtain the degree of Doctor"
+        "Doctoral Thesis presented to IME-USP in order to obtain the title of " + i18n.title-phd + ". Program: " + program
       }
     }
   } else {
