@@ -1,3 +1,5 @@
+#import "@preview/drafting:0.2.2": margin-note
+
 // Layout settings for USP theses and dissertations
 
 #let setup-layout(lang: "pt", body) = {
@@ -14,7 +16,7 @@
 
   // Typography
   set text(
-    font: "Libertinus Serif", 
+    font: "New Computer Modern", 
     size: 12pt,
     lang: lang,
   )
@@ -84,3 +86,11 @@
   set par(leading: 0.5em, justify: true)
   pad(left: 4cm, body)
 }
+
+// Table helpers (booktabs style)
+#let toprule = table.hline(stroke: 1.5pt)
+#let midrule = table.hline(stroke: 0.8pt)
+#let bottomrule = table.hline(stroke: 1.5pt)
+
+// Drafting / TODO notes
+#let todo(content) = margin-note(stroke: orange + 1pt, fill: orange.lighten(80%), content)
