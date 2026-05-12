@@ -1,4 +1,4 @@
-#import "../src/lib.typ": usp-thesis
+#import "../src/lib.typ": *
 
 // Latex-style font
 #set text(font: "New Computer Modern")
@@ -8,12 +8,13 @@
   title-alt: [Desenvolvimento de Templates Typst para a USP],
   author: "Joã da Silva",
   advisor: "Prof. Dr. Exemplary Advisor",
-  institute: "Instituto de Matemática e Estatística",
+  institute: "Institute of Mathematics and Statistics",
   program: "Graduate Program in Statistics",
-  degree: "Mestre",
+  degree: degrees.msc,
   local: "São Paulo",
   year: "2024",
-  lang: "en",
+  lang: langs.en,
+  version: versions.original,
   abstract-pt: [
     Este trabalho descreve a criação de um template Typst para dissertações e teses seguindo as diretrizes da USP. O template automatiza a formatação de capas, resumos e elementos pré-textuais.
   ],
