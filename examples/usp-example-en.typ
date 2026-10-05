@@ -1,8 +1,5 @@
 #import "../src/lib.typ": *
 
-// Latex-style font
-#set text(font: "New Computer Modern")
-
 #show: usp-thesis.with(
   title: [Development of Typst Templates for USP],
   title-alt: [Desenvolvimento de Templates Typst para a USP],
