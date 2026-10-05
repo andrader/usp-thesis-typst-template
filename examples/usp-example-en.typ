@@ -6,7 +6,7 @@
 #show: usp-thesis.with(
   title: [Development of Typst Templates for USP],
   title-alt: [Desenvolvimento de Templates Typst para a USP],
-  author: "Joã da Silva",
+  author: "João da Silva",
   advisor: "Prof. Dr. Exemplary Advisor",
   institute: "Institute of Mathematics and Statistics",
   program: "Graduate Program in Statistics",

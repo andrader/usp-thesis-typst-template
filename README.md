@@ -154,18 +154,21 @@ The `usp-thesis` function accepts the following parameters:
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `title` | content | The main title of the work. |
+| `title-alt` | content | The title in the other language, printed in the reference above that language's abstract. |
 | `subtitle` | content | Optional subtitle. |
 | `author` | string | Full name of the author. |
 | `advisor` | string | Full name of the supervisor. |
 | `institute` | string | Full name of the USP institute. |
 | `degree` | string | "Mestre" or "Doutor". |
 | `program` | string | Name of the graduate program. |
-| `version` | string | "Original" or "Corrigida" (Default: "Original"). |
+| `version` | string | "Original" or "Corrigida" (Default: "Original"), printed as "Versão Original". |
+| `catalog-card` | content | Optional ficha catalográfica, printed at the foot of the page after the title page (e.g. `image("ficha.png")`). |
 | `banca` | array | List of dictionaries `(nome: "", instituicao: "")` for the jury. |
 | `list-of-figures` | bool / auto | Whether to include the list of figures (auto: show if >= 5). |
 | `list-of-tables` | bool / auto | Whether to include the list of tables (auto: show if >= 5). |
 | `abstract-pt` | content | Abstract in Portuguese. |
 | `abstract-en` | content | Abstract in English. |
+| `reference-pt` / `reference-en` | content / auto / none | Bibliographic reference above each abstract (auto: built from author, title, year and institute; none: omitted). |
 
 ## Future Extensions
 
