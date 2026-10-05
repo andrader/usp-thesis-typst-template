@@ -65,7 +65,10 @@
   // Table of Contents styling
   show outline.entry.where(level: 1): it => {
     v(1em, weak: true)
-    if it.element.func() == heading and it.element.numbering == none {
+    // Lists of figures and tables (all level-1 entries) stay in regular weight.
+    if it.element.func() == figure {
+      it
+    } else if it.element.func() == heading and it.element.numbering == none {
       strong(upper(it))
     } else {
       strong(it)
