@@ -1,7 +1,8 @@
 #import "@preview/ctheorems:1.1.3": *
 
-#let argmax = math.op("argmax")
-#let argmin = math.op("argmin")
+// Subscripts go underneath in display math, as for lim and max.
+#let argmax = math.op("argmax", limits: true)
+#let argmin = math.op("argmin", limits: true)
 #let bm(x) = math.bold(x)
 #let tr = math.op("tr")
 #let diag = math.op("diag")

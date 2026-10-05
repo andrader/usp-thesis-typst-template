@@ -1,4 +1,8 @@
-= Apêndice A - Tabelas de Referência
+#import "/src/lib.typ": appendix
+
+#show: appendix
+
+= Tabelas de Referência
 #figure(
   table(
     columns: (auto, auto),

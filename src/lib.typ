@@ -1,5 +1,5 @@
 #import "usp-thesis.typ": usp-thesis
-#import "layout.typ": quote-long, todo, toprule, midrule, bottomrule
+#import "layout.typ": quote-long, appendix, annex, todo, todo-kinds, note-outline, toprule, midrule, bottomrule
 #import "math.typ": *
 
 // Re-exporting common packages for the user

@@ -82,6 +82,8 @@
       abstract-title: "RESUMO",
       abstract-title-en: "ABSTRACT",
       summary-title: "Sumário",
+      cover: "Capa",
+      chapter: "Capítulo",
       keywords: "Palavras-chave: ",
       area: "Área de Concentração: ",
       title-msc: "Mestre em Ciências",
@@ -109,6 +111,8 @@
       abstract-title: "RESUMO",
       abstract-title-en: "ABSTRACT",
       summary-title: "Contents",
+      cover: "Cover",
+      chapter: "Chapter",
       keywords: "Keywords: ",
       area: "Concentration Area: ",
       title-msc: "Master of Science",
@@ -158,6 +162,11 @@
   }
 
   // 1. Cover
+  // The cover has no heading: an invisible one gives it a PDF bookmark.
+  {
+    show heading: none
+    heading(level: 1, numbering: none, outlined: false, bookmarked: true)[#i18n.cover]
+  }
   cover(
     institution: if lang == "pt" { "Universidade de São Paulo\n" + institute } else { "University of São Paulo\n" + institute },
     author: author,
@@ -261,34 +270,34 @@
     let show-tables = if list-of-tables == auto { tables.len() >= 5 } else { list-of-tables }
     
     if show-figures {
-      heading(level: 1, numbering: none, outlined: false)[#i18n.figures]
+      heading(level: 1, numbering: none, outlined: false, bookmarked: true)[#i18n.figures]
       outline(title: none, target: figure.where(kind: image))
       pagebreak()
     }
     
     if show-tables {
-      heading(level: 1, numbering: none, outlined: false)[#i18n.tables]
+      heading(level: 1, numbering: none, outlined: false, bookmarked: true)[#i18n.tables]
       outline(title: none, target: figure.where(kind: table))
       pagebreak()
     }
   }
   
   if abbreviations != none {
-    heading(level: 1, numbering: none, outlined: false)[#i18n.abbreviations]
+    heading(level: 1, numbering: none, outlined: false, bookmarked: true)[#i18n.abbreviations]
     v(1cm)
     abbreviations
     pagebreak()
   }
   
   if symbols != none {
-    heading(level: 1, numbering: none, outlined: false)[#i18n.symbols]
+    heading(level: 1, numbering: none, outlined: false, bookmarked: true)[#i18n.symbols]
     v(1cm)
     symbols
     pagebreak()
   }
 
   // Table of Contents (Sumário) - Must be the last pre-textual element
-  heading(level: 1, numbering: none, outlined: false)[#i18n.summary-title]
+  heading(level: 1, numbering: none, outlined: false, bookmarked: true)[#i18n.summary-title]
   outline(title: none, indent: auto)
   pagebreak()
 
@@ -296,6 +305,10 @@
   
   // Show page numbering from here
   set page(numbering: "1", number-align: right + top)
+
+  // Chapter (level-1) references print as "Chapter N"; `appendix` and `annex`
+  // override the supplement.
+  show heading.where(level: 1): set heading(supplement: i18n.chapter)
 
   body
 }

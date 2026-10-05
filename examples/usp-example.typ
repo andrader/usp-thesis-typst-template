@@ -1,4 +1,4 @@
-#import "../src/lib.typ": usp-thesis
+#import "../src/lib.typ": usp-thesis, appendix, annex
 
 // Latex-style font
 #set text(font: "New Computer Modern")
@@ -97,14 +97,12 @@ Typst é uma alternativa viável para a redação de teses na USP.
 
 / Typst: Um novo sistema de composição de documentos baseado em marcação que é projetado para ser tão poderoso quanto o LaTeX e tão fácil de usar quanto o Markdown.
 
-#set heading(numbering: "A.1")
-#counter(heading).update(0)
+#show: appendix
 
-= Apêndice A - Detalhes da Implementação
+= Detalhes da Implementação
 Este apêndice contém detalhes técnicos sobre as funções de layout.
 
-#set heading(numbering: "I.1")
-#counter(heading).update(0)
+#show: annex
 
-= Anexo I - Regulamento da Pós-Graduação
+= Regulamento da Pós-Graduação
 Documentação oficial da USP.

@@ -20,7 +20,7 @@ keywords = [
 ]
 categories = ["thesis", "paper"]
 disciplines = ["mathematics", "computer-science", "engineering"]
-compiler = "0.12.0"
+compiler = "0.13.0"
 
 [template]
 path = "src/template"

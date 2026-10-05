@@ -1,4 +1,4 @@
-#import "@preview/drafting:0.2.2": margin-note
+#import "@preview/drafting:0.2.2": inline-note, note-outline
 
 // Layout settings for USP theses and dissertations
 
@@ -68,12 +68,24 @@
     // Lists of figures and tables (all level-1 entries) stay in regular weight.
     if it.element.func() == figure {
       it
+    } else if it.element.func() == heading and it.element.numbering == "A.1" {
+      // Appendix and annex entries read "APPENDIX A – Title" (see `appendix`).
+      let n = numbering("A", ..counter(heading).at(it.element.location()))
+      strong(link(it.element.location(), it.indented(
+        none,
+        [#upper[#it.element.supplement #n –] #it.inner()],
+      )))
     } else if it.element.func() == heading and it.element.numbering == none {
       strong(upper(it))
     } else {
       strong(it)
     }
   }
+
+  // References (ABNT NBR 6023): left-aligned, not justified, in the IME-USP
+  // author-date style. A `style` passed to `bibliography` overrides it.
+  set bibliography(style: read("usp-ime.csl", encoding: none))
+  show bibliography: set par(justify: false)
 
   // Captions and Tables
   show figure: set text(size: 10pt)
@@ -95,5 +107,53 @@
 #let midrule = table.hline(stroke: 0.8pt)
 #let bottomrule = table.hline(stroke: 1.5pt)
 
-// Drafting / TODO notes
-#let todo(content) = margin-note(stroke: orange + 1pt, fill: orange.lighten(80%), content)
+// Appendices and annexes (ABNT NBR 14724): lettered numbering, referenced as
+// "Appendix A", and the level-1 heading printed as "APPENDIX A – TITLE".
+// Use `#show: appendix` (or `#show: annex`) before the first one; the
+// numbering restarts at A.
+#let appendix(supplement: auto, body) = {
+  let supplement = if supplement == auto {
+    context if text.lang == "pt" [Apêndice] else [Appendix]
+  } else { supplement }
+  set heading(numbering: "A.1")
+  show heading.where(level: 1): set heading(supplement: supplement)
+  show heading.where(level: 1): it => {
+    pagebreak(weak: true)
+    v(1.5cm)
+    set text(size: 14pt, weight: "bold", hyphenate: false)
+    set par(justify: false)
+    align(center, upper[#it.supplement #counter(heading).display("A") – #it.body])
+    v(1.5cm)
+  }
+  counter(heading).update(0)
+  body
+}
+
+#let annex(body) = appendix(
+  supplement: context if text.lang == "pt" [Anexo] else [Annex],
+  body,
+)
+
+// Drafting / TODO notes. Notes are inline, highlighted in the running text:
+// margin notes that overlap are pushed down through a state that needs one
+// extra layout pass per overlapping note, so dense pages never converge. Each
+// kind of note has its own color, which `#note-outline()` also shows.
+#let todo-kinds = (
+  write: (label: "Write", color: orange),
+  results: (label: "Results", color: blue),
+  decision: (label: "Decision", color: purple),
+  source: (label: "Source", color: red),
+  verify: (label: "Verify", color: rgb("#008b8b")),
+  code: (label: "Code", color: rgb("#2e8b57")),
+)
+
+#let todo(kind: "write", content) = {
+  assert(kind in todo-kinds, message: "unknown todo kind: " + kind)
+  let (label, color) = todo-kinds.at(kind)
+  inline-note(
+    par-break: false,
+    stroke: color + 1pt,
+    fill: color.lighten(85%),
+    text(size: 0.85em)[*#label:* #content],
+  )
+}

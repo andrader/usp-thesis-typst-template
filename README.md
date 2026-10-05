@@ -10,6 +10,10 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
 - **IMEUSP Support**: Specific branding and "Standard Statement" for the Institute of Mathematics and Statistics.
 - **Extensible**: Easily adaptable to other USP institutes.
 - **Pre-textual Elements**: Support for Dedication, Acknowledgments, and Epigraph.
+- **PDF Bookmarks**: Cover, lists and table of contents appear in the PDF viewer's outline.
+- **References**: ABNT (NBR 6023) layout in the IME-USP author-date style by default.
+- **Appendices and Annexes**: `#show: appendix` / `#show: annex` give lettered headings ("APPENDIX A – TITLE") in the text and the table of contents.
+- **Drafting Notes**: `#todo(kind: "verify")[...]` inline notes, colored by kind, listed by `#note-outline()`.
 
 ## Table of Contents
 - [USP Thesis Typst Template](#usp-thesis-typst-template)
@@ -115,7 +119,7 @@ typst watch main.typ
 ## Example Usage
 
 ```typst
-#import "@local/usp-thesis:0.1.0": usp-thesis
+#import "@local/usp-thesis:0.1.0": usp-thesis, appendix
 
 #show: usp-thesis.with(
   title: [Your Thesis Title],
@@ -136,6 +140,11 @@ typst watch main.typ
 
 = Introduction
 Your content starts here...
+
+#bibliography("refs.bib") // ABNT / IME-USP style unless `style:` is given
+
+#show: appendix
+= Proofs // printed as "APPENDIX A – PROOFS", referenced as "Appendix A"
 ```
 
 ## Configuration Options

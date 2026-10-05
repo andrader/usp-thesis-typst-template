@@ -96,14 +96,12 @@ Typst is a viable alternative for writing theses at USP.
 
 / Typst: A new markup-based typesetting system that is designed to be as powerful as LaTeX while being much easier to learn and use.
 
-#set heading(numbering: "A.1")
-#counter(heading).update(0)
+#show: appendix
 
-= Appendix A - Implementation Details
+= Implementation Details
 This appendix contains technical details about the layout functions.
 
-#set heading(numbering: "I.1")
-#counter(heading).update(0)
+#show: annex
 
-= Annex I - Graduate Regulations
+= Graduate Regulations
 Official USP documentation.
