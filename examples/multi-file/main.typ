@@ -7,7 +7,7 @@
   author: "João da Silva",
   advisor: "Prof. Dr. Orientador Exemplar",
   institute: "Instituto de Matemática e Estatística",
-  program: "Programa de Pós-Graduação em Estatística",
+  program: "Estatística",
   degree: "Mestre",
   local: "São Paulo",
   year: "2024",

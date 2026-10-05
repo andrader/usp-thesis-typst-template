@@ -14,10 +14,12 @@
   en: "en",
 )
 
-/// Degree levels (Official USP Nomenclature)
+/// Degree levels. The template turns these into the full title
+/// ("Mestre em Ciências" / "Master of Science"); pass a full title such as
+/// "Mestre em Engenharia" to `degree` when your program grants another one.
 #let degrees = (
-  msc: "Mestre em Ciências",
-  phd: "Doutor em Ciências",
+  msc: "Mestre",
+  phd: "Doutor",
 )
 
 /// Document versions

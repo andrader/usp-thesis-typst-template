@@ -9,7 +9,7 @@
   author: "Joã da Silva",
   advisor: "Prof. Dr. Exemplary Advisor",
   institute: "Institute of Mathematics and Statistics",
-  program: "Graduate Program in Statistics",
+  program: "Statistics",
   degree: degrees.msc,
   local: "São Paulo",
   year: "2024",

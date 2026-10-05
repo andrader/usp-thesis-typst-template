@@ -10,10 +10,10 @@
   author: "João da Silva",
   advisor: "Prof. Dr. Orientador Exemplar",
   institute: "Instituto de Matemática e Estatística",
-  program: "Programa de Pós-Graduação em Estatística",
+  program: "Estatística",
   degree: "Mestre",
   local: "São Paulo",
-  year: "2024",
+  // year: "2026", // defaults to the current year
   abstract-pt: [
     Este trabalho descreve a criação de um template Typst para dissertações e teses seguindo as diretrizes da USP. O template automatiza a formatação de capas, resumos e elementos pré-textuais.
   ],

@@ -126,7 +126,7 @@ typst watch main.typ
   author: "Your Name",
   advisor: "Advisor's Name",
   institute: "Instituto de Matemática e Estatística",
-  program: "Probability and Statistics",
+  program: "Estatística",
   degree: "Mestre", // or "Doutor"
   abstract-pt: [ ... ],
   keywords-pt: ("Keyword1", "Keyword2"),
@@ -149,27 +149,50 @@ Your content starts here...
 
 ## Configuration Options
 
-The `usp-thesis` function accepts the following parameters:
+The `usp-thesis` function accepts the following parameters. Only `title`, `author`, `advisor`, `program` and the abstracts really need to be set; everything else has a sensible default.
 
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `title` | content | The main title of the work. |
-| `subtitle` | content | Optional subtitle. |
-| `author` | string | Full name of the author. |
-| `advisor` | string | Full name of the supervisor. |
-| `institute` | string | Full name of the USP institute. |
-| `degree` | string | "Mestre" or "Doutor". |
-| `program` | string | Name of the graduate program. |
-| `version` | string | "Original" or "Corrigida" (Default: "Original"). |
-| `banca` | array | List of dictionaries `(nome: "", instituicao: "")` for the jury. |
-| `list-of-figures` | bool / auto | Whether to include the list of figures (auto: show if >= 5). |
-| `list-of-tables` | bool / auto | Whether to include the list of tables (auto: show if >= 5). |
-| `abstract-pt` | content | Abstract in Portuguese. |
-| `abstract-en` | content | Abstract in English. |
+| Parameter | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `title` | content | `[Título da Dissertação]` | The main title of the work. |
+| `title-alt` | content | `none` | The title in the other language (required by USP). |
+| `subtitle` | content | `none` | Optional subtitle. |
+| `author` | string | `"Nome do Autor"` | Full name of the author. |
+| `advisor` | string | `"Nome do Orientador"` | Full name of the supervisor. |
+| `coadvisor` | string | `none` | Full name of the co-supervisor. |
+| `degree` | string | `"Mestre"` | `"Mestre"` or `"Doutor"` (or `degrees.msc` / `degrees.phd`). The template prints the title "Mestre em Ciências" / "Doutor em Ciências" ("Master of Science" / "Doctor of Science" in English). If your program grants another title, pass it in full, e.g. `"Mestre em Engenharia"`. |
+| `program` | string | `"Nome do Programa"` | Name of the graduate program, printed as "Programa: …", so write `"Estatística"` rather than `"Programa de Pós-Graduação em Estatística"`. |
+| `area` | string | `none` | Concentration area ("Área de Concentração: …"). |
+| `institute` | string | `"Instituto de Matemática e Estatística"` | Full name of the USP institute. IME gets its own statement; other institutes get the general USP one. |
+| `local` | string | `"São Paulo"` | City shown on the cover and title page. |
+| `year` | string / int / auto | `auto` | Year of deposit. `auto` uses the current year. |
+| `version` | string | `"Original"` | `"Original"` or `"Corrigida"` (or `versions.original` / `versions.revised`). |
+| `nature` | string | `none` | Overrides the inferred "Dissertação" / "Tese". |
+| `lang` | string | `"pt"` | Main language, `"pt"` or `"en"` (or `langs.pt` / `langs.en`). |
+| `abstract-pt` | content | `none` | Abstract in Portuguese (Resumo). |
+| `keywords-pt` | array | `()` | Keywords in Portuguese. |
+| `abstract-en` | content | `none` | Abstract in English. |
+| `keywords-en` | array | `()` | Keywords in English. |
+| `dedication` | content | `none` | Optional dedication. |
+| `acknowledgments` | content | `none` | Optional acknowledgments. |
+| `epigraph` | content | `none` | Optional epigraph. |
+| `errata` | content | `none` | Optional errata. |
+| `list-of-figures` | bool / auto | `auto` | Whether to include the list of figures (auto: show if there are 5 or more). |
+| `list-of-tables` | bool / auto | `auto` | Whether to include the list of tables (auto: show if there are 5 or more). |
+| `abbreviations` | content | `none` | Optional list of abbreviations and acronyms. |
+| `symbols` | content | `none` | Optional list of symbols. |
+| `banca` | array | `()` | Jury members as `(nome: "", instituicao: "")` dictionaries. The approval sheet is only printed when this is not empty. |
+
+With the defaults above, the title page of an IME master's dissertation reads:
+
+> Dissertação apresentada ao IME-USP para obtenção do título de Mestre em Ciências. Programa: Estatística
+
+and for another institute, e.g. `institute: "Escola Politécnica"`, `degree: "Doutor em Engenharia"`:
+
+> Tese apresentada à Escola Politécnica da Universidade de São Paulo para obtenção do título de Doutor em Engenharia. Programa: Engenharia Elétrica
 
 ## Future Extensions
 
-To add support for a new institute with a specific "Nature Text", modify the logic in `src/lib.typ`:
+To add support for a new institute with a specific "Nature Text", modify the `nature-text` logic in `src/usp-thesis.typ`:
 
 ```typst
 let nature-text = if institute.contains("Your Institute") {
