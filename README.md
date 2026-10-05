@@ -2,7 +2,9 @@
 
 A comprehensive, extensible Typst template for theses and dissertations at the University of São Paulo (USP) and specifically the Institute of Mathematics and Statistics (IMEUSP), following the official guidelines (5th edition, 2024).
 
-Example output PDF generated with this template: [usp-example.pdf](examples/usp-example.pdf)
+![Cover page of a thesis generated with this template](thumbnail.png)
+
+Example output PDF generated with this template: [usp-example.pdf](https://github.com/andrader/usp-thesis-typst-template/blob/bc838c7d272bc1e3544a78fa0d8e1155db160622/examples/usp-example.pdf)
 
 ## Features
 - **Official Layout**: Correct margins (3cm/2cm), A4 size, and 1.5 line spacing.
