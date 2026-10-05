@@ -8,14 +8,14 @@
 /// - author (string): The author's name.
 /// - advisor (string): The advisor's name.
 /// - coadvisor (string): The co-advisor's name.
-/// - degree (string): The degree (e.g., "Mestre", "Doutor").
-/// - program (string): The graduate program name.
+/// - degree (string): The degree level ("Mestre" or "Doutor"), or a full title such as "Mestre em Engenharia".
+/// - program (string): The graduate program name, e.g. "Estatística" (printed after "Programa: ").
 /// - area (string): The concentration area.
 /// - institute (string): The USP institute name.
 /// - local (string): The city.
-/// - year (string): The year of deposit.
+/// - year (string, int or auto): The year of deposit (auto: the current year).
 /// - version (string): "Original" or "Corrigida".
-/// - nature (string): "Dissertação" or "Tese".
+/// - nature (string): Overrides the inferred "Dissertação" or "Tese".
 /// - lang (string): Main document language ("pt" or "en").
 /// - catalog-card (content): Optional ficha catalográfica (cataloging-in-publication
 ///   card), printed at the foot of the page after the title page. Pass the card the
@@ -32,8 +32,8 @@
 /// - acknowledgments (content): Optional acknowledgments.
 /// - epigraph (content): Optional epigraph.
 /// - errata (content): Optional errata content.
-/// - list-of-figures (bool): Whether to include the list of figures (auto: show if >= 5).
-/// - list-of-tables (bool): Whether to include the list of tables (auto: show if >= 5).
+/// - list-of-figures (bool or auto): Whether to include the list of figures (auto: show if >= 5).
+/// - list-of-tables (bool or auto): Whether to include the list of tables (auto: show if >= 5).
 /// - abbreviations (content): Optional list of abbreviations.
 /// - symbols (content): Optional list of symbols.
 /// - banca (array): List of jury member dictionaries ((nome: "", instituicao: "")).
@@ -46,11 +46,11 @@
   advisor: "Nome do Orientador",
   coadvisor: none,
   degree: "Mestre",
-  program: "Programa de Pós-Graduação",
+  program: "Nome do Programa",
   area: none,
   institute: "Instituto de Matemática e Estatística",
   local: "São Paulo",
-  year: "2024",
+  year: auto,
   version: "Original",
   nature: none, 
   lang: "pt",
@@ -139,35 +139,37 @@
 
   // Infer nature and institute-specifics
   // We check for "Mestre" or "Master" to identify Master's degrees
-  let is-msc = degree.contains(regex("Mestre|Master"))
+  let is-msc = degree.contains(regex("Mestr|Master"))
   let is-ime = institute.contains(regex("Matemática e Estatística|Mathematics and Statistics"))
 
   let actual-nature = if nature != none { nature } 
                       else if is-msc { i18n.nature-msc } 
                       else { i18n.nature-phd }
 
+  // A bare degree level ("Mestre", "Doutor") gets the usual USP title
+  // ("Mestre em Ciências"); a full title ("Mestre em Engenharia") is kept as is.
+  let degree-title = if degree.contains(regex("\s(em|in|of)\s")) { degree }
+                     else if is-msc { i18n.title-msc }
+                     else { i18n.title-phd }
+
+  let year = if year == auto { str(datetime.today().year()) } else { str(year) }
+
   let version-text = (i18n.version)(version)
 
-  // IMEUSP specific nature text
+  // Nature text, e.g. "Dissertação apresentada ao IME-USP para obtenção do
+  // título de Mestre em Ciências. Programa: Estatística"
   let nature-text = if is-ime {
     if lang == "pt" {
-      if is-msc {
-        "Dissertação apresentada ao IME-USP para obtenção do título de " + i18n.title-msc + ". Programa: " + program
-      } else {
-        "Tese apresentada ao IME-USP para obtenção do título de " + i18n.title-phd + ". Programa: " + program
-      }
+      actual-nature + " apresentada ao IME-USP para obtenção do título de " + degree-title + ". Programa: " + program
     } else {
-      if is-msc {
-        "Master's Dissertation presented to IME-USP in order to obtain the title of " + i18n.title-msc + ". Program: " + program
-      } else {
-        "Doctoral Thesis presented to IME-USP in order to obtain the title of " + i18n.title-phd + ". Program: " + program
-      }
+      actual-nature + " presented to IME-USP in order to obtain the title of " + degree-title + ". Program: " + program
     }
   } else {
     if lang == "pt" {
-      actual-nature + " apresentada ao " + institute + " da Universidade de São Paulo para obtenção do título de " + degree + " em " + program
+      let article = if institute.starts-with(regex("Escola|Faculdade")) { " apresentada à " } else { " apresentada ao " }
+      actual-nature + article + institute + " da Universidade de São Paulo para obtenção do título de " + degree-title + ". Programa: " + program
     } else {
-      actual-nature + " presented to " + institute + " of the University of São Paulo in order to obtain the degree of " + degree + " in " + program
+      actual-nature + " presented to the " + institute + " of the University of São Paulo in order to obtain the title of " + degree-title + ". Program: " + program
     }
   }
 
