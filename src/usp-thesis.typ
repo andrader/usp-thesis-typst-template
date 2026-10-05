@@ -17,10 +17,17 @@
 /// - version (string): "Original" or "Corrigida".
 /// - nature (string): Overrides the inferred "Dissertação" or "Tese".
 /// - lang (string): Main document language ("pt" or "en").
+/// - catalog-card (content): Optional ficha catalográfica (cataloging-in-publication
+///   card), printed at the foot of the page after the title page. Pass the card the
+///   library provides, e.g. `image("ficha.png", width: 12.5cm)`.
 /// - abstract-pt (content): The abstract in Portuguese (Mandatory).
 /// - keywords-pt (array): List of keywords in Portuguese (Mandatory).
 /// - abstract-en (content): The abstract in English (Mandatory).
 /// - keywords-en (array): List of keywords in English (Mandatory).
+/// - reference-pt (content): Bibliographic reference printed above the Portuguese
+///   abstract (auto: built from author, Portuguese title, year, nature and institute;
+///   none: omitted).
+/// - reference-en (content): Same, above the English abstract, with the English title.
 /// - dedication (content): Optional dedication.
 /// - acknowledgments (content): Optional acknowledgments.
 /// - epigraph (content): Optional epigraph.
@@ -47,10 +54,13 @@
   version: "Original",
   nature: none, 
   lang: "pt",
+  catalog-card: none,
   abstract-pt: none,
   keywords-pt: (),
   abstract-en: none,
   keywords-en: (),
+  reference-pt: auto,
+  reference-en: auto,
   dedication: none,
   acknowledgments: none,
   epigraph: none,
@@ -68,7 +78,7 @@
   // Dictionary for custom localized strings
   let i18n = (
     pt: (
-      version: " Versão",
+      version: v => "Versão " + v,
       advisor: "Orientador: ",
       coadvisor: "Coorientador: ",
       acknowledgments: "AGRADECIMENTOS",
@@ -97,7 +107,7 @@
       ),
     ),
     en: (
-      version: " Version",
+      version: v => v + " Version",
       advisor: "Advisor: ",
       coadvisor: "Co-advisor: ",
       acknowledgments: "ACKNOWLEDGMENTS",
@@ -144,7 +154,7 @@
 
   let year = if year == auto { str(datetime.today().year()) } else { str(year) }
 
-  let version-text = version + i18n.version
+  let version-text = (i18n.version)(version)
 
   // Nature text, e.g. "Dissertação apresentada ao IME-USP para obtenção do
   // título de Mestre em Ciências. Programa: Estatística"
@@ -162,6 +172,29 @@
       actual-nature + " presented to the " + institute + " of the University of São Paulo in order to obtain the title of " + degree-title + ". Program: " + program
     }
   }
+
+  // Bibliographic reference printed above each abstract (ABNT NBR 6023):
+  // "SILVA, João da. *Título*: subtítulo. 2024. Dissertação (Mestrado) – ...".
+  // Each one carries the title in that abstract's language, so the secondary
+  // one comes from `title-alt`.
+  let author-entry = if type(author) == str and author.trim().contains(" ") {
+    let parts = author.trim().split(" ")
+    upper(parts.last()) + ", " + parts.slice(0, -1).join(" ")
+  } else { author }
+  let make-reference(ref-lang) = {
+    let is-main = ref-lang == lang
+    let ref-title = if is-main or title-alt == none { title } else { title-alt }
+    let ref-subtitle = if is-main and subtitle != none [: #subtitle]
+    let ref-nature = if ref-lang == "pt" {
+      if is-msc { "Dissertação (Mestrado)" } else { "Tese (Doutorado)" }
+    } else {
+      if is-msc { "Dissertation (Master's)" } else { "Thesis (Doctorate)" }
+    }
+    let university = if ref-lang == "pt" { "Universidade de São Paulo" } else { "University of São Paulo" }
+    [#author-entry. #strong(ref-title)#ref-subtitle. #year. #ref-nature -- #institute, #university, #local, #year.]
+  }
+  let reference-pt = if reference-pt == auto { make-reference("pt") } else { reference-pt }
+  let reference-en = if reference-en == auto { make-reference("en") } else { reference-en }
 
   // 1. Cover
   // The cover has no heading: an invisible one gives it a PDF bookmark.
@@ -198,6 +231,14 @@
     local: local,
     year: year,
   )
+
+  // 2a. Catalog card (ficha catalográfica), on the page after the title page
+  if catalog-card != none {
+    page(margin: 3cm, {
+      v(1fr)
+      align(center, catalog-card)
+    })
+  }
   
   // Setup layout for pre-textual elements (margins and heading styles)
   show: setup-layout.with(lang: lang)
@@ -251,6 +292,7 @@
       abstract-pt,
       keywords-list: keywords-pt,
       keywords-label: if lang == "pt" { i18n.keywords } else { "Palavras-chave: " },
+      reference: reference-pt,
     )
   }
 
@@ -260,6 +302,7 @@
       abstract-en,
       keywords-list: keywords-en,
       keywords-label: if lang == "en" { i18n.keywords } else { "Keywords: " },
+      reference: reference-en,
     )
   }
   

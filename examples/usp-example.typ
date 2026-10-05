@@ -14,6 +14,12 @@
   degree: "Mestre",
   local: "São Paulo",
   year: "2024",
+  // Replace with the card issued by the library, e.g. image("ficha.png").
+  catalog-card: rect(width: 12.5cm, height: 7.5cm, inset: 1em)[
+    #set align(left)
+    #set text(size: 10pt)
+    Ficha catalográfica elaborada pela biblioteca da unidade.
+  ],
   abstract-pt: [
     Este trabalho descreve a criação de um template Typst para dissertações e teses seguindo as diretrizes da USP. O template automatiza a formatação de capas, resumos e elementos pré-textuais.
   ],

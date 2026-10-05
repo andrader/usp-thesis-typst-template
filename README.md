@@ -154,7 +154,7 @@ The `usp-thesis` function accepts the following parameters. Only `title`, `autho
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `title` | content | `[Título da Dissertação]` | The main title of the work. |
-| `title-alt` | content | `none` | The title in the other language (required by USP). |
+| `title-alt` | content | `none` | The title in the other language (required by USP), printed in the reference above that language's abstract. |
 | `subtitle` | content | `none` | Optional subtitle. |
 | `author` | string | `"Nome do Autor"` | Full name of the author. |
 | `advisor` | string | `"Nome do Orientador"` | Full name of the supervisor. |
@@ -165,13 +165,15 @@ The `usp-thesis` function accepts the following parameters. Only `title`, `autho
 | `institute` | string | `"Instituto de Matemática e Estatística"` | Full name of the USP institute. IME gets its own statement; other institutes get the general USP one. |
 | `local` | string | `"São Paulo"` | City shown on the cover and title page. |
 | `year` | string / int / auto | `auto` | Year of deposit. `auto` uses the current year. |
-| `version` | string | `"Original"` | `"Original"` or `"Corrigida"` (or `versions.original` / `versions.revised`). |
+| `version` | string | `"Original"` | `"Original"` or `"Corrigida"` (or `versions.original` / `versions.revised`), printed as "Versão Original". |
 | `nature` | string | `none` | Overrides the inferred "Dissertação" / "Tese". |
 | `lang` | string | `"pt"` | Main language, `"pt"` or `"en"` (or `langs.pt` / `langs.en`). |
+| `catalog-card` | content | `none` | Optional ficha catalográfica, printed at the foot of the page after the title page (e.g. `image("ficha.png")`). |
 | `abstract-pt` | content | `none` | Abstract in Portuguese (Resumo). |
 | `keywords-pt` | array | `()` | Keywords in Portuguese. |
 | `abstract-en` | content | `none` | Abstract in English. |
 | `keywords-en` | array | `()` | Keywords in English. |
+| `reference-pt` / `reference-en` | content / auto / none | `auto` | Bibliographic reference above each abstract (auto: built from author, title, year and institute; none: omitted). |
 | `dedication` | content | `none` | Optional dedication. |
 | `acknowledgments` | content | `none` | Optional acknowledgments. |
 | `epigraph` | content | `none` | Optional epigraph. |
