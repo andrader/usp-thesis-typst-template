@@ -20,11 +20,7 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
   - [Features](#features)
   - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
-  - [Install the Template Package](#install-the-template-package)
-    - [MacOS](#macos)
-    - [Linux](#linux)
-    - [Windows](#windows)
-  - [Initialize a new project](#initialize-a-new-project)
+  - [Getting Started](#getting-started)
   - [Example Usage](#example-usage)
   - [Configuration Options](#configuration-options)
   - [Future Extensions](#future-extensions)
@@ -72,41 +68,24 @@ Example output PDF generated with this template: [usp-example.pdf](examples/usp-
 
 
 
-## Install the Template Package
+## Getting Started
 
-### MacOS
+### Typst web app
 
-```bash
-# Clone the repository at the correct location for local Typst packages
-git clone https://github.com/andrader/usp-thesis-typst-template ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0/
-```
+Click **Start from template** on [typst.app](https://typst.app/) and search for `modern-usp-thesis`.
 
-### Linux
+### Command line
 
-```bash
-# Clone the repository at the correct location for local Typst packages
-git clone https://github.com/andrader/usp-thesis-typst-template ~/.local/share/typst/packages/local/usp-thesis/0.1.0/
-```
-
-### Windows
-
-```powershell
-# Clone the repository at the correct location for local Typst packages
-git clone https://github.com/andrader/usp-thesis-typst-template $env:APPDATA\typst\packages\local\usp-thesis\0.1.0
-```
-
-## Initialize a new project
-
-In your Typst project, on your terminal initialize the template with:
+Create a new project from the template:
 
 ```bash
-typst init @local/usp-thesis:0.1.0
+typst init @preview/modern-usp-thesis:0.1.0
 ```
 
-Then, you can generate the PDF with:
+Then generate the PDF with:
 
 ```bash
-cd usp-thesis
+cd modern-usp-thesis
 typst compile main.typ
 ```
 
@@ -119,7 +98,7 @@ typst watch main.typ
 ## Example Usage
 
 ```typst
-#import "@local/usp-thesis:0.1.0": usp-thesis, appendix
+#import "@preview/modern-usp-thesis:0.1.0": usp-thesis, appendix
 
 #show: usp-thesis.with(
   title: [Your Thesis Title],
@@ -206,39 +185,18 @@ let nature-text = if institute.contains("Your Institute") {
 
 ## Development and Testing
 
-To install this Typst package locally for development or testing, create symlinks as follows (macOS example):
+To test changes before publishing, link this repository as a local package (macOS example; use `~/.local/share` on Linux or `%APPDATA%` on Windows, or run `typst info` to see the package path):
 
 ```sh
-# Create the necessary directories if they don't exist
-mkdir -p ~/Library/Application\ Support/typst/packages/local/usp-thesis/
-# Create a symbolic link to the current directory
-ln -sfn $PWD ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0
-# Verify the files are correctly linked
-ls -l ~/Library/Application\ Support/typst/packages/local/usp-thesis/0.1.0
+mkdir -p ~/Library/Application\ Support/typst/packages/preview/modern-usp-thesis/
+ln -sfn $PWD ~/Library/Application\ Support/typst/packages/preview/modern-usp-thesis/0.1.0
 ```
 
-
-
-
-Then, in your Typst files, import the package with:
-
-```typst
-#import "@local/usp-thesis:0.1.0": *
-```
-
----
-
-You can store packages in {data-dir}/typst/packages/{namespace}/{name}/{version} to make them available locally on your system. Here, {data-dir} is
-
-- $XDG_DATA_HOME or ~/.local/share on Linux
-- ~/Library/Application Support on macOS
-- %APPDATA% on Windows
-
-You may also run typst info and check Package path for the actual path. 
-This would be helpful if you have installed the Typst compiler from Snap or are using special environment variables.
-
-
-
+Then `typst init @preview/modern-usp-thesis:0.1.0` uses your local copy. Run `just test` to compile the files in `examples/`.
 
 ## License
-MIT
+
+The package code is licensed under the [MIT License](LICENSE), with two exceptions:
+
+- The files in `src/template/`, which are copied into your project by `typst init`, are licensed under [MIT No Attribution](LICENSE-MIT-0), so you can use and distribute your thesis without any license obligations.
+- `src/usp-ime.csl` is the [Universidade de São Paulo – Instituto de Matemática e Estatística](https://www.zotero.org/styles/universidade-de-sao-paulo-instituto-de-matematica-e-estatistica) citation style from the Zotero Style Repository, licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).

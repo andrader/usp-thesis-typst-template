@@ -1,4 +1,4 @@
-#import "@local/usp-thesis:0.1.0": usp-thesis, appendix, annex
+#import "@preview/modern-usp-thesis:0.1.0": usp-thesis, appendix, annex
 
 // Latex-style font
 #set text(font: "New Computer Modern")
