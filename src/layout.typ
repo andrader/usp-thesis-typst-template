@@ -21,14 +21,14 @@
     lang: lang,
   )
 
-  // Spacing
+  // 1.5 line spacing (ABNT NBR 14724): an ~18pt baseline-to-baseline distance
+  // at 12pt, as LaTeX's `\onehalfspacing`. Typst's leading is the gap between
+  // the baseline and the next line's cap height (~0.7em), hence 0.8em.
   set par(
-    leading: 0.65em, 
+    leading: 0.8em,
+    spacing: 1.5em,
     justify: true,
   )
-  
-  // Rule for 1.5 line spacing
-  set par(spacing: 1.5em)
 
   // Section numbering
   set heading(numbering: "1.1.1.1.1")
