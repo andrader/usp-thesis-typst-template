@@ -154,7 +154,7 @@
   // Infer nature and institute-specifics
   // We check for "Mestre" or "Master" to identify Master's degrees
   let is-msc = degree.contains(regex("Mestr|Master"))
-  let is-ime = institute.contains(regex("Matemática e Estatística|Mathematics and Statistics"))
+  let is-ime = institute.contains(regex("Matemática e Estatística|Matemática, Estatística e Ciência da Computação|Mathematics and Statistics|Mathematics, Statistics and Computer Science"))
 
   let actual-nature = if nature != none { nature } 
                       else if is-msc { i18n.nature-msc } 
