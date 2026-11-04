@@ -36,13 +36,23 @@
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
     v(1.5cm)
-    set text(size: 14pt, weight: "bold")
     if it.numbering == none {
       // Pre-textual elements: Centered and All Caps
+      set text(size: 14pt, weight: "bold")
       align(center, upper(it.body))
     } else {
-      // Textual chapters: Bold, 14pt, keep case as provided
-      it
+      // Textual chapters (IME-USP / LaTeX `book` look): a "Chapter N" line,
+      // then the title on its own line, both left-aligned, bold and large.
+      // The heading's own supplement is the localised "Chapter"/"Capítulo".
+      set text(size: 24pt, weight: "bold", hyphenate: false)
+      set par(justify: false, leading: 0.4em, spacing: 0.4em)
+      block(width: 100%, {
+        it.supplement
+        [ ]
+        numbering(it.numbering, ..counter(heading).at(it.location()))
+        v(0.6cm, weak: true)
+        it.body
+      })
     }
     v(1.5cm)
   }
