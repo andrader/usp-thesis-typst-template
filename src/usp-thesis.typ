@@ -224,25 +224,30 @@
   }
   let program-text = i18n.program + program
 
-  // Bibliographic reference printed above each abstract (ABNT NBR 6023):
-  // "SILVA, João da. *Título*: subtítulo. 2024. Dissertação (Mestrado) – ...".
+  // Reference printed above each abstract, in the format of the IME-USP model:
+  // "Name Surname. *Title*. Dissertação (Mestrado). Instituto de Matemática e
+  // Estatística, Universidade de São Paulo, São Paulo, 2026." (the English one
+  // reads "Thesis (Master's). Institute of Mathematics and Statistics, ...").
   // Each one carries the title in that abstract's language, so the secondary
-  // one comes from `title-alt`.
-  let author-entry = if type(author) == str and author.trim().contains(" ") {
-    let parts = author.trim().split(" ")
-    upper(parts.last()) + ", " + parts.slice(0, -1).join(" ")
-  } else { author }
+  // one comes from `title-alt`; without it a highlighted placeholder stands in.
   let make-reference(ref-lang) = {
     let is-main = ref-lang == lang
-    let ref-title = if is-main or title-alt == none { title } else { title-alt }
+    let ref-title = if is-main { title }
+                    else if title-alt != none { title-alt }
+                    else if ref-lang == "pt" { highlight[Título em português (`title-alt`)] }
+                    else { highlight[Title in English (`title-alt`)] }
     let ref-subtitle = if is-main and subtitle != none [: #subtitle]
     let ref-nature = if ref-lang == "pt" {
       if is-msc { "Dissertação (Mestrado)" } else { "Tese (Doutorado)" }
     } else {
-      if is-msc { "Dissertation (Master's)" } else { "Thesis (Doctorate)" }
+      if is-msc { "Thesis (Master's)" } else { "Thesis (Doctorate)" }
     }
+    // The model names the IME without "e Ciência da Computação" in these lines.
+    let ref-institute = if is-ime {
+      if ref-lang == "pt" { "Instituto de Matemática e Estatística" } else { "Institute of Mathematics and Statistics" }
+    } else { institute }
     let university = if ref-lang == "pt" { "Universidade de São Paulo" } else { "University of São Paulo" }
-    [#author-entry. #strong(ref-title)#ref-subtitle. #year. #ref-nature -- #institute, #university, #local, #year.]
+    [#author. #strong(ref-title)#ref-subtitle. #ref-nature. #ref-institute, #university, #local, #year.]
   }
   let reference-pt = if reference-pt == auto { make-reference("pt") } else { reference-pt }
   let reference-en = if reference-en == auto { make-reference("en") } else { reference-en }

@@ -159,7 +159,7 @@ The `usp-thesis` function accepts the following parameters. Only `title`, `autho
 | `keywords-pt` | array | `()` | Keywords in Portuguese. |
 | `abstract-en` | content | `none` | Abstract in English. |
 | `keywords-en` | array | `()` | Keywords in English. |
-| `reference-pt` / `reference-en` | content / auto / none | `auto` | Bibliographic reference above each abstract (auto: built from author, title, year and institute; none: omitted). |
+| `reference-pt` / `reference-en` | content / auto / none | `auto` | Bibliographic reference above each abstract (auto: built as in the IME-USP model, "Author. Title. Dissertação (Mestrado). Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, 2026." and, above the English abstract, "Thesis (Master's). Institute of Mathematics and Statistics, University of São Paulo, ..."; the title of the other language comes from `title-alt`, and a highlighted placeholder stands in until it is set; none: omitted). |
 | `dedication` | content | `none` | Optional dedication. |
 | `acknowledgments` | content | `none` | Optional acknowledgments. |
 | `epigraph` | content | `none` | Optional epigraph. |
