@@ -146,7 +146,7 @@ The `usp-thesis` function accepts the following parameters. Only `title`, `autho
 | `institute` | string | `"Instituto de Matemática e Estatística"` | Full name of the USP institute. IME gets its own statement; other institutes get the general USP one. |
 | `local` | string | `"São Paulo"` | City shown on the cover and title page. |
 | `year` | string / int / auto | `auto` | Year of deposit. `auto` uses the current year. |
-| `month` | auto / int / string / none | `auto` | Month printed with the year at the foot of the title page ("novembro de 2026", "November 2026"). `auto` uses the current month, an integer 1-12 is named in `lang`, `none` prints the year only. |
+| `month` | auto / int / string / none | `auto` | Month printed with the year at the foot of the title page ("novembro de 2026", "November 2026"). `auto` uses the current month only when `year` is also `auto`, and otherwise prints the year alone (set `month` explicitly with a fixed `year`); an integer 1-12 is named in `lang`, `none` prints the year only. |
 | `version` | string | `"Original"` | `"Original"` or `"Corrigida"` (or `versions.original` / `versions.revised`). |
 | `version-page` | bool | `true` | With `version: "Original"`, prints the model's statement on a page of its own after the title page ("Esta é a versão original da dissertação elaborada pelo candidato …, tal como submetida à Comissão Julgadora." / "This is the original version of the dissertation prepared by the candidate …, as submitted to the Examining Committee."), repeating the author and title. With `false`, or another version, a bold label ("Versão Corrigida") is printed on the title page instead. |
 | `nature` | string | `none` | Overrides the inferred "Dissertação" / "Tese". |

@@ -15,8 +15,9 @@
 /// - local (string): The city.
 /// - year (string, int or auto): The year of deposit (auto: the current year).
 /// - month (auto, int, string or none): The month printed with the year at the
-///   foot of the title page, e.g. "November 2026" (auto: the current month; an
-///   integer 1-12 is named in `lang`; none: the year only).
+///   foot of the title page, e.g. "November 2026" (auto: the current month when
+///   `year` is auto too, otherwise none; an integer 1-12 is named in `lang`;
+///   none: the year only).
 /// - version (string): "Original" or "Corrigida".
 /// - nature (string): Overrides the inferred "Dissertação" or "Tese".
 /// - lang (string): Main document language ("pt" or "en").
@@ -198,11 +199,15 @@
                      else if is-msc { i18n.title-msc }
                      else { i18n.title-phd }
 
+  let year-is-auto = year == auto
   let year = if year == auto { str(datetime.today().year()) } else { str(year) }
 
   // Month and year printed at the foot of the title page ("November 2026").
-  // `month` is auto (the current month), a number 1-12 or a name.
-  let month-text = if month == auto { i18n.months.at(datetime.today().month() - 1) }
+  // `month` is auto (the current month if `year` is auto too, else none), a
+  // number 1-12 or a name.
+  let month = if month == auto and not year-is-auto { none } else { month }
+  let month-text = if month == none { none }
+                   else if month == auto { i18n.months.at(datetime.today().month() - 1) }
                    else if type(month) == int { i18n.months.at(month - 1) }
                    else { month }
   let date-text = if month == none { year }
