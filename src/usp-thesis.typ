@@ -1,5 +1,5 @@
 #import "layout.typ": setup-layout, quote-long
-#import "elements.typ": cover as cover-page, title-page as make-title-page, approval-sheet, abstract-page
+#import "elements.typ": cover as cover-page, title-page as make-title-page, version-page as make-version-page, approval-sheet, abstract-page
 
 /// Main template function for USP theses and dissertations.
 /// - title (content): The title of the thesis (in the main language).
@@ -23,6 +23,11 @@
 /// - font (string or array): The document font, or a list of fallbacks (default: "New Computer Modern").
 /// - cover (bool): Whether to print the cover.
 /// - title-page (bool): Whether to print the title page.
+/// - version-page (bool): Whether the "original version" statement gets its own
+///   page after the title page, as in the IME-USP model ("This is the original
+///   version of the dissertation prepared by the candidate ..., as submitted to
+///   the Examining Committee."). It applies to `version: "Original"` only; other
+///   versions, or false, print the bold version label on the title page instead.
 /// - catalog-card (content): Optional ficha catalográfica (cataloging-in-publication
 ///   card), printed at the foot of the page after the title page (only with the
 ///   title page). Pass the card the
@@ -69,6 +74,7 @@
   font: "New Computer Modern",
   cover: true,
   title-page: true,
+  version-page: true,
   catalog-card: none,
   abstract-pt: none,
   keywords-pt: (),
@@ -97,6 +103,9 @@
   let i18n = (
     pt: (
       version: v => "Versão " + v,
+      original-statement: (work, author) => [Esta é a versão original da #work elaborada pelo candidato #author, tal como submetida à Comissão Julgadora.],
+      work-msc: "dissertação",
+      work-phd: "tese",
       program: "Programa: ",
       ime-full: "Instituto de Matemática, Estatística e Ciência da Computação",
       months: ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"),
@@ -129,6 +138,9 @@
     ),
     en: (
       version: v => v + " Version",
+      original-statement: (work, author) => [This is the original version of the #work prepared by the candidate #author, as submitted to the Examining Committee.],
+      work-msc: "dissertation",
+      work-phd: "thesis",
       program: "Program: ",
       ime-full: "Institute of Mathematics, Statistics and Computer Science",
       months: ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),
@@ -250,11 +262,14 @@
 
     // 2. Title Page
     if title-page {
+      // The original version has its own page after the title page.
+      let own-version-page = version-page and version == "Original"
+
       make-title-page(
         author: author,
         title: title,
         subtitle: subtitle,
-        version: version-text,
+        version: if own-version-page { none } else { version-text },
         nature: nature-text,
         program: program-text,
         area: area,
@@ -265,7 +280,20 @@
         date: date-text,
       )
 
-      // 2a. Catalog card (ficha catalográfica), on the page after the title page
+      // 2a. "Original version" page
+      if own-version-page {
+        make-version-page(
+          author: author,
+          title: title,
+          subtitle: subtitle,
+          statement: (i18n.original-statement)(
+            if is-msc { i18n.work-msc } else { i18n.work-phd },
+            author,
+          ),
+        )
+      }
+
+      // 2b. Catalog card (ficha catalográfica), on the page after the title page
       if catalog-card != none {
         page(margin: 3cm, {
           v(1fr)

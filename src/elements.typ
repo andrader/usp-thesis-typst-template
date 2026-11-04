@@ -100,6 +100,39 @@
   pagebreak()
 }
 
+/// "Original version" page, as in the IME-USP model: it repeats the author and
+/// the title of the title page, with the statement in a right-aligned block.
+/// - statement (content): The sentence of the block.
+#let version-page(
+  author: none,
+  title: none,
+  subtitle: none,
+  statement: none,
+) = {
+  set page(margin: 3cm)
+  set align(center)
+
+  author
+
+  v(4cm)
+  text(14pt, strong(title))
+  if subtitle != none {
+    text(14pt, strong[: ])
+    text(14pt, strong(subtitle))
+  }
+
+  v(2cm)
+  align(right)[
+    #box(width: 50%)[
+      #set align(left)
+      #set text(size: 10pt)
+      #statement
+    ]
+  ]
+
+  pagebreak()
+}
+
 #let approval-sheet(
   author: none,
   title: none,
