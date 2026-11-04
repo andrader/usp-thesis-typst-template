@@ -110,7 +110,7 @@
   let i18n = (
     pt: (
       version: v => "Versão " + v,
-      original-statement: (work, author) => [Esta é a versão original da #work elaborada pelo candidato #author, tal como submetida à Comissão Julgadora.],
+      original-statement: (work, author) => [Esta é a versão original da #work elaborada pelo(a) candidato(a) #author, tal como submetida à Comissão Julgadora.],
       licence: [O conteúdo deste trabalho é publicado sob a licença CC BY 4.0 (Creative Commons Attribution 4.0 International License).],
       catalog-placeholder: [FICHA CATALOGRÁFICA NESTA PÁGINA \ ACESSE: FC.IME.USP.BR],
       work-msc: "dissertação",
