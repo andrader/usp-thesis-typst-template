@@ -1,5 +1,5 @@
 #import "layout.typ": setup-layout, quote-long
-#import "elements.typ": cover as cover-page, title-page as make-title-page, version-page as make-version-page, approval-sheet, abstract-page
+#import "elements.typ": cover as cover-page, title-page as make-title-page, version-page as make-version-page, catalog-card-page as make-catalog-card-page, approval-sheet, abstract-page
 
 /// Main template function for USP theses and dissertations.
 /// - title (content): The title of the thesis (in the main language).
@@ -28,10 +28,15 @@
 ///   version of the dissertation prepared by the candidate ..., as submitted to
 ///   the Examining Committee."). It applies to `version: "Original"` only; other
 ///   versions, or false, print the bold version label on the title page instead.
-/// - catalog-card (content): Optional ficha catalográfica (cataloging-in-publication
-///   card), printed at the foot of the page after the title page (only with the
-///   title page). Pass the card the
-///   library provides, e.g. `image("ficha.png", width: 12.5cm)`.
+/// - catalog-card (none, bytes or content): The ficha catalográfica
+///   (cataloging-in-publication card), on the verso of the "original version"
+///   page, below the CC BY 4.0 licence line (only with the title page). Give the
+///   file generated at fc.ime.usp.br as bytes, a PDF or an image, read relative
+///   to your document: `read("assets/ficha.pdf", encoding: none)`. It is placed at
+///   the width of the text. For other sizes pass content, e.g.
+///   `image("ficha.png", width: 12.5cm)` (the path is relative to the template,
+///   so only bytes read in your own file can point into your project). none: the
+///   page carries a framed placeholder (when `version-page` prints its page).
 /// - abstract-pt (content): The abstract in Portuguese (Mandatory).
 /// - keywords-pt (array): List of keywords in Portuguese (Mandatory).
 /// - abstract-en (content): The abstract in English (Mandatory).
@@ -104,6 +109,8 @@
     pt: (
       version: v => "Versão " + v,
       original-statement: (work, author) => [Esta é a versão original da #work elaborada pelo candidato #author, tal como submetida à Comissão Julgadora.],
+      licence: [O conteúdo deste trabalho é publicado sob a licença CC BY 4.0 (Creative Commons Attribution 4.0 International License).],
+      catalog-placeholder: [FICHA CATALOGRÁFICA NESTA PÁGINA \ ACESSE: FC.IME.USP.BR],
       work-msc: "dissertação",
       work-phd: "tese",
       program: "Programa: ",
@@ -139,6 +146,8 @@
     en: (
       version: v => v + " Version",
       original-statement: (work, author) => [This is the original version of the #work prepared by the candidate #author, as submitted to the Examining Committee.],
+      licence: [The content of this work is published under the CC BY 4.0 licence (Creative Commons Attribution 4.0 International License).],
+      catalog-placeholder: [CATALOG CARD ON THIS PAGE \ — generate at fc.ime.usp.br],
       work-msc: "dissertation",
       work-phd: "thesis",
       program: "Program: ",
@@ -293,12 +302,17 @@
         )
       }
 
-      // 2b. Catalog card (ficha catalográfica), on the page after the title page
-      if catalog-card != none {
-        page(margin: 3cm, {
-          v(1fr)
-          align(center, catalog-card)
-        })
+      // 2b. Catalog card (ficha catalográfica) and licence, on the verso of the
+      // "original version" page (a framed placeholder without a card)
+      if catalog-card != none or own-version-page {
+        let card = if type(catalog-card) == bytes {
+          image(catalog-card, width: 100%)
+        } else { catalog-card }
+        make-catalog-card-page(
+          licence: i18n.licence,
+          card: card,
+          placeholder: i18n.catalog-placeholder,
+        )
       }
     }
   }

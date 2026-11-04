@@ -133,6 +133,39 @@
   pagebreak()
 }
 
+/// Page of the catalog card (ficha catalográfica), verso of the "original
+/// version" page in the IME-USP model: the licence line at the top and the card
+/// below it. Without a card, a framed placeholder marks its place.
+/// - licence (content): The licence line.
+/// - card (content or none): The card, e.g. `image("ficha.pdf")`.
+/// - placeholder (content): Text of the box shown when there is no card.
+#let catalog-card-page(
+  licence: none,
+  card: none,
+  placeholder: none,
+) = {
+  set page(margin: 3cm)
+  set par(justify: false)
+
+  text(size: 10pt, licence)
+
+  v(1fr)
+  align(center,
+    if card != none { card } else {
+      rect(
+        width: 12.5cm,
+        height: 7.5cm,
+        stroke: (paint: gray, thickness: 1pt, dash: "dashed"),
+        inset: 1em,
+        align(center + horizon, text(fill: gray.darken(30%), weight: "bold", placeholder)),
+      )
+    },
+  )
+  v(1fr)
+
+  pagebreak()
+}
+
 #let approval-sheet(
   author: none,
   title: none,
