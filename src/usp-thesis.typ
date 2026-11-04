@@ -14,6 +14,9 @@
 /// - institute (string): The USP institute name.
 /// - local (string): The city.
 /// - year (string, int or auto): The year of deposit (auto: the current year).
+/// - month (auto, int, string or none): The month printed with the year at the
+///   foot of the title page, e.g. "November 2026" (auto: the current month; an
+///   integer 1-12 is named in `lang`; none: the year only).
 /// - version (string): "Original" or "Corrigida".
 /// - nature (string): Overrides the inferred "Dissertação" or "Tese".
 /// - lang (string): Main document language ("pt" or "en").
@@ -59,6 +62,7 @@
   institute: "Instituto de Matemática e Estatística",
   local: "São Paulo",
   year: auto,
+  month: auto,
   version: "Original",
   nature: none, 
   lang: "pt",
@@ -93,6 +97,9 @@
   let i18n = (
     pt: (
       version: v => "Versão " + v,
+      program: "Programa: ",
+      ime-full: "Instituto de Matemática, Estatística e Ciência da Computação",
+      months: ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"),
       advisor: "Orientador: ",
       coadvisor: "Coorientador: ",
       acknowledgments: "AGRADECIMENTOS",
@@ -122,6 +129,9 @@
     ),
     en: (
       version: v => v + " Version",
+      program: "Program: ",
+      ime-full: "Institute of Mathematics, Statistics and Computer Science",
+      months: ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),
       advisor: "Advisor: ",
       coadvisor: "Co-advisor: ",
       acknowledgments: "ACKNOWLEDGMENTS",
@@ -168,24 +178,30 @@
 
   let year = if year == auto { str(datetime.today().year()) } else { str(year) }
 
+  // Month and year printed at the foot of the title page ("November 2026").
+  // `month` is auto (the current month), a number 1-12 or a name.
+  let month-text = if month == auto { i18n.months.at(datetime.today().month() - 1) }
+                   else if type(month) == int { i18n.months.at(month - 1) }
+                   else { month }
+  let date-text = if month == none { year }
+                  else if lang == "pt" { month-text + " de " + year }
+                  else { month-text + " " + year }
+
   let version-text = (i18n.version)(version)
 
-  // Nature text, e.g. "Dissertação apresentada ao IME-USP para obtenção do
-  // título de Mestre em Ciências. Programa: Estatística"
-  let nature-text = if is-ime {
-    if lang == "pt" {
-      actual-nature + " apresentada ao IME-USP para obtenção do título de " + degree-title + ". Programa: " + program
-    } else {
-      actual-nature + " presented to IME-USP in order to obtain the title of " + degree-title + ". Program: " + program
-    }
+  // The IME gets its full name on the title page, whatever short form `institute` has.
+  let institute-full = if is-ime { i18n.ime-full } else { institute }
+
+  // Nature text, e.g. "Dissertação apresentada ao Instituto de Matemática,
+  // Estatística e Ciência da Computação da Universidade de São Paulo para
+  // obtenção do título de Mestre em Ciências." The program has its own line.
+  let nature-text = if lang == "pt" {
+    let article = if institute-full.starts-with(regex("Escola|Faculdade")) { " apresentada à " } else { " apresentada ao " }
+    actual-nature + article + institute-full + " da Universidade de São Paulo para obtenção do título de " + degree-title + "."
   } else {
-    if lang == "pt" {
-      let article = if institute.starts-with(regex("Escola|Faculdade")) { " apresentada à " } else { " apresentada ao " }
-      actual-nature + article + institute + " da Universidade de São Paulo para obtenção do título de " + degree-title + ". Programa: " + program
-    } else {
-      actual-nature + " presented to the " + institute + " of the University of São Paulo in order to obtain the title of " + degree-title + ". Program: " + program
-    }
+    actual-nature + " presented to the " + institute-full + " of the University of São Paulo in order to obtain the title of " + degree-title + "."
   }
+  let program-text = i18n.program + program
 
   // Bibliographic reference printed above each abstract (ABNT NBR 6023):
   // "SILVA, João da. *Título*: subtítulo. 2024. Dissertação (Mestrado) – ...".
@@ -240,15 +256,13 @@
         subtitle: subtitle,
         version: version-text,
         nature: nature-text,
-        institute: institute,
-        degree: degree,
-        program: program,
+        program: program-text,
         area: area,
         area-label: i18n.area,
         advisor: i18n.advisor + advisor,
         coadvisor: if coadvisor != none { i18n.coadvisor + coadvisor } else { none },
         local: local,
-        year: year,
+        date: date-text,
       )
 
       // 2a. Catalog card (ficha catalográfica), on the page after the title page
@@ -282,7 +296,7 @@
         author: author,
         title: title,
         subtitle: subtitle,
-        nature: nature-text,
+        nature: nature-text + " " + program-text,
         banca: banca,
         labels: i18n.labels,
       )

@@ -39,37 +39,44 @@
   pagebreak()
 }
 
+/// Title page (folha de rosto), laid out as in the IME-USP model: author and
+/// title in normal case, then a right-aligned block with the nature of the work,
+/// the program, the advisor, and the city and month/year at the foot.
+/// - version (content or none): A bold label under the title, for versions
+///   without their own page; none omits it.
+/// - program (string or none): The program line, already labelled.
+/// - date (content): Month and year.
 #let title-page(
   author: none,
   title: none,
   subtitle: none,
-  version: "Original",
+  version: none,
   volumes: none,
   nature: none,
-  institute: none,
-  degree: none,
   program: none,
   area: none,
   area-label: "Área de Concentração: ",
   advisor: none,
   coadvisor: none,
   local: none,
-  year: none,
+  date: none,
 ) = {
   set page(margin: 3cm)
   set align(center)
-  
-  upper(author)
-  
+
+  author
+
   v(4cm)
-  text(14pt, strong(upper(title)))
+  text(14pt, strong(title))
   if subtitle != none {
-    [: ]
-    text(14pt, strong(upper(subtitle)))
+    text(14pt, strong[: ])
+    text(14pt, strong(subtitle))
   }
-  
-  v(2cm)
-  strong(version)
+
+  if version != none {
+    v(2cm)
+    strong(version)
+  }
 
   v(2cm)
   align(right)[
@@ -77,16 +84,18 @@
       #set align(left)
       #set text(size: 10pt)
       #nature
-      
+
+      #if program != none [#program]
+
       #if area != none [#area-label #area]
-      
+
       #advisor
       #if coadvisor != none [\ #coadvisor]
     ]
   ]
 
   v(1fr)
-  [#local \ #year]
+  [#local \ #date]
 
   pagebreak()
 }

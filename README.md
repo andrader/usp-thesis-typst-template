@@ -141,11 +141,12 @@ The `usp-thesis` function accepts the following parameters. Only `title`, `autho
 | `advisor` | string | `"Nome do Orientador"` | Full name of the supervisor. |
 | `coadvisor` | string | `none` | Full name of the co-supervisor. |
 | `degree` | string | `"Mestre"` | `"Mestre"` or `"Doutor"` (or `degrees.msc` / `degrees.phd`). The template prints the title "Mestre em Ciências" / "Doutor em Ciências" ("Master of Science" / "Doctor of Science" in English). If your program grants another title, pass it in full, e.g. `"Mestre em Engenharia"`. |
-| `program` | string | `"Nome do Programa"` | Name of the graduate program, printed as "Programa: …", so write `"Estatística"` rather than `"Programa de Pós-Graduação em Estatística"`. |
+| `program` | string | `"Nome do Programa"` | Name of the graduate program, printed on its own line as "Programa: …" ("Program: …" in English), so write `"Estatística"` rather than `"Programa de Pós-Graduação em Estatística"`. |
 | `area` | string | `none` | Concentration area ("Área de Concentração: …"). |
 | `institute` | string | `"Instituto de Matemática e Estatística"` | Full name of the USP institute. IME gets its own statement; other institutes get the general USP one. |
 | `local` | string | `"São Paulo"` | City shown on the cover and title page. |
 | `year` | string / int / auto | `auto` | Year of deposit. `auto` uses the current year. |
+| `month` | auto / int / string / none | `auto` | Month printed with the year at the foot of the title page ("novembro de 2026", "November 2026"). `auto` uses the current month, an integer 1-12 is named in `lang`, `none` prints the year only. |
 | `version` | string | `"Original"` | `"Original"` or `"Corrigida"` (or `versions.original` / `versions.revised`), printed as "Versão Original". |
 | `nature` | string | `none` | Overrides the inferred "Dissertação" / "Tese". |
 | `lang` | string | `"pt"` | Main language, `"pt"` or `"en"` (or `langs.pt` / `langs.en`). |
@@ -184,13 +185,17 @@ To compile only your chapters, e.g. to share a draft with your advisor, set `fro
 )
 ```
 
-With the defaults above, the title page of an IME master's dissertation reads:
+The title page follows the IME-USP model: author and title in normal case, then a right-aligned block, then the city and the month and year. With the defaults above, the block of an IME master's dissertation reads:
 
-> Dissertação apresentada ao IME-USP para obtenção do título de Mestre em Ciências. Programa: Estatística
+> Dissertação apresentada ao Instituto de Matemática, Estatística e Ciência da Computação da Universidade de São Paulo para obtenção do título de Mestre em Ciências.
+>
+> Programa: Estatística
 
-and for another institute, e.g. `institute: "Escola Politécnica"`, `degree: "Doutor em Engenharia"`:
+(an IME institute is always printed with its full name), and for another institute, e.g. `institute: "Escola Politécnica"`, `degree: "Doutor em Engenharia"`:
 
-> Tese apresentada à Escola Politécnica da Universidade de São Paulo para obtenção do título de Doutor em Engenharia. Programa: Engenharia Elétrica
+> Tese apresentada à Escola Politécnica da Universidade de São Paulo para obtenção do título de Doutor em Engenharia.
+>
+> Programa: Engenharia Elétrica
 
 ## Future Extensions
 
