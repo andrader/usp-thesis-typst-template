@@ -37,9 +37,8 @@
 ///   the width of the text. For other sizes pass content, e.g.
 ///   `image("ficha.png", width: 12.5cm)` (the path is relative to the template,
 ///   so only bytes read in your own file can point into your project). Only the
-///   first page of a PDF is used. none: the
-///   page carries a framed placeholder. The page is printed for IME theses, or
-///   when a card is given.
+///   first page of a PDF is used. none: the page carries a framed placeholder.
+///   The page is printed for IME theses, or when a card is given.
 /// - abstract-pt (content): The abstract in Portuguese (Mandatory).
 /// - keywords-pt (array): List of keywords in Portuguese (Mandatory).
 /// - abstract-en (content): The abstract in English (Mandatory).
@@ -112,7 +111,7 @@
     pt: (
       version: v => "Versão " + v,
       original-statement: (work, author) => [Esta é a versão original da #work elaborada pelo(a) candidato(a) #author, tal como submetida à Comissão Julgadora.],
-      licence: [O conteúdo deste trabalho é publicado sob a licença CC BY 4.0 (Creative Commons Attribution 4.0 International License).],
+      licence: [O conteúdo deste trabalho é publicado sob a licença CC BY 4.0 (Creative Commons Attribution 4.0 International License)],
       catalog-placeholder: [FICHA CATALOGRÁFICA NESTA PÁGINA \ ACESSE: FC.IME.USP.BR],
       work-msc: "dissertação",
       work-phd: "tese",
@@ -149,7 +148,7 @@
     en: (
       version: v => v + " Version",
       original-statement: (work, author) => [This is the original version of the #work prepared by the candidate #author, as submitted to the Examining Committee.],
-      licence: [The content of this work is published under the CC BY 4.0 licence (Creative Commons Attribution 4.0 International License).],
+      licence: [The content of this work is published under the CC BY 4.0 licence (Creative Commons Attribution 4.0 International License)],
       catalog-placeholder: [CATALOG CARD ON THIS PAGE \ — generate at fc.ime.usp.br],
       work-msc: "dissertation",
       work-phd: "thesis",
