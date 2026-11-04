@@ -231,9 +231,10 @@
   let program-text = i18n.program + program
 
   // Reference printed above each abstract, in the format of the IME-USP model:
-  // "Name Surname. *Title*. Dissertação (Mestrado). Instituto de Matemática e
-  // Estatística, Universidade de São Paulo, São Paulo, 2026." (the English one
-  // reads "Thesis (Master's). Institute of Mathematics and Statistics, ...").
+  // "Name Surname. *Title*. Dissertação (Mestrado). Instituto de Matemática,
+  // Estatística e Ciência da Computação, Universidade de São Paulo, São Paulo,
+  // 2026." (the English one reads "Thesis (Master's). Institute of Mathematics,
+  // Statistics and Computer Science, ...").
   // Each one carries the title in that abstract's language, so the secondary
   // one comes from `title-alt`; without it a highlighted placeholder stands in.
   let make-reference(ref-lang) = {
@@ -248,9 +249,9 @@
     } else {
       if is-msc { "Thesis (Master's)" } else { "Thesis (Doctorate)" }
     }
-    // The model names the IME without "e Ciência da Computação" in these lines.
+    // The IME is printed with its current full name, in the language of the abstract.
     let ref-institute = if is-ime {
-      if ref-lang == "pt" { "Instituto de Matemática e Estatística" } else { "Institute of Mathematics and Statistics" }
+      if ref-lang == "pt" { "Instituto de Matemática, Estatística e Ciência da Computação" } else { "Institute of Mathematics, Statistics and Computer Science" }
     } else { institute }
     let university = if ref-lang == "pt" { "Universidade de São Paulo" } else { "University of São Paulo" }
     [#author. #strong(ref-title)#ref-subtitle. #ref-nature. #ref-institute, #university, #local, #year.]
