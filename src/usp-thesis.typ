@@ -36,7 +36,8 @@
 ///   to your document: `read("assets/ficha.pdf", encoding: none)`. It is placed at
 ///   the width of the text. For other sizes pass content, e.g.
 ///   `image("ficha.png", width: 12.5cm)` (the path is relative to the template,
-///   so only bytes read in your own file can point into your project). none: the
+///   so only bytes read in your own file can point into your project). Only the
+///   first page of a PDF is used. none: the
 ///   page carries a framed placeholder. The page is printed for IME theses, or
 ///   when a card is given.
 /// - abstract-pt (content): The abstract in Portuguese (Mandatory).
