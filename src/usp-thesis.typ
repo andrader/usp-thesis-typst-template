@@ -36,7 +36,8 @@
 ///   the width of the text. For other sizes pass content, e.g.
 ///   `image("ficha.png", width: 12.5cm)` (the path is relative to the template,
 ///   so only bytes read in your own file can point into your project). none: the
-///   page carries a framed placeholder (when `version-page` prints its page).
+///   page carries a framed placeholder. The page is printed for IME theses, or
+///   when a card is given.
 /// - abstract-pt (content): The abstract in Portuguese (Mandatory).
 /// - keywords-pt (array): List of keywords in Portuguese (Mandatory).
 /// - abstract-en (content): The abstract in English (Mandatory).
@@ -309,7 +310,8 @@
 
       // 2b. Catalog card (ficha catalográfica) and licence, on the verso of the
       // "original version" page (a framed placeholder without a card)
-      if catalog-card != none or own-version-page {
+      // Only for the IME (whose model has it) or when a card is given.
+      if catalog-card != none or is-ime {
         let card = if type(catalog-card) == bytes {
           image(catalog-card, width: 100%)
         } else { catalog-card }
