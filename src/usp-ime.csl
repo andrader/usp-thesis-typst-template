@@ -154,7 +154,11 @@
       <text variable="locator"/>
     </group>
   </macro>
-  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true" collapse="year">
+  <!-- No collapse="year": Typst's Hayagriva applies cite-group-delimiter to every join, not only
+       to the years of a collapsed author, so collapsing gives either "Ghosh and Basu 2013a; 2013b"
+       (works separated by ";" but the repeated author lost) or commas between unrelated works.
+       Without it each work keeps its author, as in plainnat without sort&compress. -->
+  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true">
     <sort>
       <key macro="author"/>
       <key variable="issued"/>
