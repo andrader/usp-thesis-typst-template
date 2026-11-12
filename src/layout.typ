@@ -2,16 +2,14 @@
 
 // Layout settings for USP theses and dissertations
 
+// Page margins (USP Diretrizes 2.2.0, digital format), for every page.
+#let usp-margin = (top: 3cm, left: 3cm, right: 2cm, bottom: 2cm)
+
 #let setup-layout(lang: "pt", body) = {
   // Paper and Margins
   set page(
     paper: "a4",
-    margin: (
-      top: 3cm,
-      left: 3cm,
-      right: 2cm,
-      bottom: 2cm,
-    ),
+    margin: usp-margin,
   )
 
   // Typography
@@ -32,57 +30,49 @@
   // Section numbering
   set heading(numbering: "1.1.1.1.1")
   
-  // Section styling
+  // Section styling (NBR 14724, USP Diretrizes 2.2.1 and 2.3): a section title
+  // starts at the top margin and is set off from the text by one 1.5-spaced
+  // line; the unnumbered titles (lists, abstracts, references...) have the same
+  // emphasis as the primary sections.
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
-    v(1.5cm)
+    // Footnotes are numbered per chapter, not restarting on each page.
+    counter(footnote).update(0)
+    set text(size: 14pt, weight: "bold", hyphenate: false)
+    set par(justify: false)
+    set block(above: 1.5em, below: 1.5em)
     if it.numbering == none {
-      // Pre-textual elements: Centered and All Caps
-      set text(size: 14pt, weight: "bold")
+      // Unnumbered titles: centered.
       align(center, upper(it.body))
     } else {
-      // Textual chapters (IME-USP / LaTeX `book` look): a "Chapter N" line,
-      // then the title on its own line, both left-aligned, bold and large.
-      // The heading's own supplement is the localised "Chapter"/"Capítulo".
-      set text(size: 24pt, weight: "bold", hyphenate: false)
-      set par(justify: false, leading: 0.4em, spacing: 0.4em)
+      // Primary sections: "N Title" on one line, left-aligned, one space after
+      // the number. The supplement ("Chapter") stays for cross-references.
       block(width: 100%, {
-        it.supplement
-        [ ]
         numbering(it.numbering, ..counter(heading).at(it.location()))
-        v(0.6cm, weak: true)
+        [ ]
         it.body
       })
     }
-    v(1.5cm)
   }
 
-  show heading.where(level: 2): it => {
-    v(1em)
-    set text(size: 12pt, weight: "bold")
-    it
-    v(0.5em)
-  }
+  show heading.where(level: 2): set text(size: 12pt, weight: "bold")
+  show heading.where(level: 3): set text(size: 12pt, weight: "bold")
+  show heading.where(level: 2): set block(above: 1.5em, below: 1.5em)
+  show heading.where(level: 3): set block(above: 1.5em, below: 1.5em)
 
-  show heading.where(level: 3): it => {
-    v(0.5em)
-    set text(size: 12pt, weight: "bold")
-    it
-    v(0.5em)
-  }
-
-  // Table of Contents styling
+  // Table of Contents styling: the same emphasis and spelling as in the text.
   show outline.entry.where(level: 1): it => {
     v(1em, weak: true)
     // Lists of figures and tables (all level-1 entries) stay in regular weight.
     if it.element.func() == figure {
-      it
+      // "Figure 1 - Title", as in the caption.
+      it.indented(none, [#it.prefix() - #it.inner()])
     } else if it.element.func() == heading and it.element.numbering == "A.1" {
-      // Appendix and annex entries read "APPENDIX A – Title" (see `appendix`).
+      // Appendix and annex entries read "APPENDIX A - TITLE" (see `appendix`).
       let n = numbering("A", ..counter(heading).at(it.element.location()))
       strong(link(it.element.location(), it.indented(
         none,
-        [#upper[#it.element.supplement #n –] #it.inner()],
+        [#upper[#it.element.supplement #n - #it.element.body] #box(width: 1fr, it.fill) #it.page()],
       )))
     } else if it.element.func() == heading and it.element.numbering == none {
       strong(upper(it))
@@ -90,18 +80,48 @@
       strong(it)
     }
   }
+  show outline.entry.where(level: 2): it => if it.element.func() == heading { strong(it) } else { it }
+  show outline.entry.where(level: 3): it => if it.element.func() == heading { strong(it) } else { it }
 
   // References (ABNT NBR 6023): left-aligned, not justified, in the IME-USP
-  // author-date style. A `style` passed to `bibliography` overrides it.
+  // author-date style, single spaced inside each entry with one blank line
+  // between entries. A `style` passed to `bibliography` overrides it.
   set bibliography(style: read("usp-ime.csl", encoding: none))
-  show bibliography: set par(justify: false)
+  show bibliography: set par(justify: false, leading: 0.5em, spacing: 1.2em)
 
-  // Captions and Tables
+  // Footnotes (USP Diretrizes 2.2.0, 4.7): 10 pt, single spaced.
+  show footnote.entry: set text(size: 10pt)
+  show footnote.entry: set par(leading: 0.5em, justify: false)
+
+  // Captions (USP Diretrizes 2.6, 2.7): on top, "Figure 1 - Title", brief,
+  // single spaced, 10 pt. The same text appears in the lists of figures/tables.
   show figure: set text(size: 10pt)
   show figure.where(kind: table): set figure.caption(position: top)
-  show figure.where(kind: image): set figure.caption(position: top) 
+  show figure.where(kind: image): set figure.caption(position: top)
+  set figure.caption(separator: " - ")
+  show figure.caption: set par(leading: 0.5em, spacing: 0.5em)
 
   body
+}
+
+/// The "Source: ..." line printed under a figure or table (USP Diretrizes 2.6,
+/// 2.7): 10 pt, single spaced, left-aligned, with the label in the document
+/// language. Put it inside the figure, after the content:
+/// `#figure(image("a.png") + figure-source[Author (2026).], caption: [Title])`.
+/// - body (content): The source, e.g. `[Elaborated by the author.]`.
+/// - label (auto, content or none): The label before the body (auto: "Fonte: "
+///   in Portuguese, "Source: " otherwise).
+#let figure-source(body, label: auto) = context {
+  let label = if label == auto {
+    if text.lang == "pt" [Fonte: ] else [Source: ]
+  } else { label }
+  block(width: 100%, above: 0.8em, below: 0pt, {
+    set text(size: 10pt, weight: "regular")
+    set par(justify: false, leading: 0.5em)
+    set align(left)
+    label
+    body
+  })
 }
 
 // Special formatting for long quotes (> 3 lines)
@@ -117,7 +137,7 @@
 #let bottomrule = table.hline(stroke: 1.5pt)
 
 // Appendices and annexes (ABNT NBR 14724): lettered numbering, referenced as
-// "Appendix A", and the level-1 heading printed as "APPENDIX A – TITLE".
+// "Appendix A", and the level-1 heading printed as "APPENDIX A - TITLE".
 // Use `#show: appendix` (or `#show: annex`) before the first one; the
 // numbering restarts at A.
 #let appendix(supplement: auto, body) = {
@@ -128,11 +148,11 @@
   show heading.where(level: 1): set heading(supplement: supplement)
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
-    v(1.5cm)
+    counter(footnote).update(0)
     set text(size: 14pt, weight: "bold", hyphenate: false)
     set par(justify: false)
-    align(center, upper[#it.supplement #counter(heading).display("A") – #it.body])
-    v(1.5cm)
+    set block(above: 1.5em, below: 1.5em)
+    align(center, upper[#it.supplement #counter(heading).display("A") - #it.body])
   }
   counter(heading).update(0)
   body

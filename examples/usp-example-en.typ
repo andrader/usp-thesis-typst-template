@@ -59,9 +59,13 @@
 USP requires strict formatting for academic works. This template aims to facilitate this process for English speakers @typst.
 
 #figure(
-  rect(width: 100pt, height: 50pt, fill: blue.lighten(80%))[Logo],
+  // `figure-source` prints the "Source: ..." line under the illustration.
+  [#rect(width: 100pt, height: 50pt, fill: blue.lighten(80%))[Logo]
+   #figure-source[Elaborated by the author.]],
   caption: [Example illustration],
 ) <fig-example>
+
+Footnotes are 10 pt, single spaced and numbered per chapter.#footnote[A first note.]
 
 = Methodology
 

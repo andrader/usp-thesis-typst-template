@@ -443,7 +443,12 @@
   // --- Start of Textual Elements ---
   
   // Show page numbering from here
-  set page(numbering: "1", number-align: right + top)
+  // (10 pt, top right; set in the header so the table of contents keeps its size)
+  set page(
+    numbering: "1",
+    footer: none,
+    header: context align(right, text(size: 10pt, counter(page).display())),
+  )
 
   // Chapter (level-1) references print as "Chapter N"; `appendix` and `annex`
   // override the supplement.

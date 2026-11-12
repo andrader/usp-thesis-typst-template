@@ -1,5 +1,7 @@
 // Elements for USP theses and dissertations
 
+#import "layout.typ": usp-margin
+
 #let cover(
   institution: none,
   author: none,
@@ -9,7 +11,7 @@
   local: none,
   year: none,
 ) = {
-  set page(margin: 3cm)
+  set page(margin: usp-margin)
   set align(center)
   set text(size: 12pt)
 
@@ -22,10 +24,12 @@
   upper(author)
 
   v(4cm)
-  text(14pt, strong(upper(title)))
+  // The title is printed as given (bold; the author writes it in lowercase
+  // except the first letter and proper names).
+  text(14pt, strong(title))
   if subtitle != none {
-    [: ]
-    text(14pt, strong(upper(subtitle)))
+    text(14pt, strong[: ])
+    text(14pt, strong(subtitle))
   }
 
   if volumes != none {
@@ -61,7 +65,7 @@
   local: none,
   date: none,
 ) = {
-  set page(margin: 3cm)
+  set page(margin: usp-margin)
   set align(center)
 
   author
@@ -109,7 +113,7 @@
   subtitle: none,
   statement: none,
 ) = {
-  set page(margin: 3cm)
+  set page(margin: usp-margin)
   set align(center)
 
   author
@@ -144,7 +148,7 @@
   card: none,
   placeholder: none,
 ) = {
-  set page(margin: 3cm)
+  set page(margin: usp-margin)
   set par(justify: false)
 
   text(size: 10pt, licence)
@@ -182,9 +186,9 @@
   ),
   is-branded: false,
 ) = {
-  set page(margin: 3cm)
+  set page(margin: usp-margin)
   set text(size: 12pt)
-  
+
   [#labels.author: #author \ ]
   [#labels.title: #strong(title)]
   if subtitle != none [: #strong(subtitle)]
@@ -205,7 +209,7 @@
     #line(length: 100%, stroke: 0.5pt)
     #membro.nome \
     #membro.instituicao \
-    #labels.judgement: #line(length: 3cm, stroke: 0.5pt)
+    #labels.judgement: #box(width: 4cm, line(length: 100%, stroke: 0.5pt))
   ]
   
   pagebreak()
@@ -227,7 +231,8 @@
     v(1cm)
   }
   
-  set par(justify: true, leading: 0.5em)
+  // Body at 1.5 line spacing, inherited from the layout.
+  set par(justify: true)
   body
   
   v(1cm)
