@@ -72,7 +72,7 @@ pr() {
     || { echo "v$VERSION does not point at HEAD: run 'just tag' first" >&2; exit 1; }
   stage
   check
-  local me work prev branch
+  local me work prev branch existing
   me=$(gh api user --jq .login)
   gh repo view "$me/packages" >/dev/null 2>&1 || gh repo fork typst/packages --clone=false
   work=$(mktemp -d)
@@ -98,8 +98,15 @@ pr() {
         git -C "$OLDPWD" log --format='- %s' "v$prev..v$VERSION"
       fi
     } > "$work/body.md"
-    gh pr create --repo typst/packages --head "$me:$branch" --base main \
-      --title "$NAME:$VERSION" --body-file "$work/body.md"
+    # Re-running a release updates the open PR of this branch instead of failing.
+    existing=$(gh pr list --repo typst/packages --head "$me:$branch" --state open \
+      --json number --jq '.[0].number // empty')
+    if [ -n "$existing" ]; then
+      gh pr edit "$existing" --repo typst/packages --title "$NAME:$VERSION" --body-file "$work/body.md"
+    else
+      gh pr create --repo typst/packages --head "$me:$branch" --base main \
+        --title "$NAME:$VERSION" --body-file "$work/body.md"
+    fi
   )
   echo "temporary clone left in $work"
 }
