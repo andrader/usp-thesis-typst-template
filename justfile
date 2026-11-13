@@ -25,6 +25,25 @@ test:
     done
     @echo "All .typ files have been processed. Check the {{build_dir}}/ directory for output PDFs."
 
+# Release to Typst Universe. The source of truth is this repo; the Universe copy is
+# generated from it. Flow: bump `version` in typst.toml, commit, `just tag`, `just release`.
+
+# Copy the package into build/packages/preview/<name>/<version> (typst.toml `exclude` applies)
+stage:
+    scripts/release.sh stage
+
+# Stage, compile the staged template and run typst-package-check
+check:
+    scripts/release.sh check
+
+# Tag HEAD as v<version> and push the tag
+tag:
+    scripts/release.sh tag
+
+# Check, then push the package to your fork of typst/packages and open the PR
+release:
+    scripts/release.sh pr
+
 # Clean build artifacts
 clean:
     rm -rf {{build_dir}}/*

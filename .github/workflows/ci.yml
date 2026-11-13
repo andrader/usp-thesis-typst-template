@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: typst-community/setup-typst@v4
+
+      - uses: extractions/setup-just@v2
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install typst-package-check
+        run: cargo install --locked typst-package-check
+
+      # Stages the package exactly as Universe would get it, compiles its template and
+      # runs typst-package-check on it.
+      - name: Check the staged package
+        run: just check
+
+      - name: Compile the examples
+        run: just test

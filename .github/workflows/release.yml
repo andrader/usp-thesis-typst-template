@@ -1,0 +1,68 @@
+name: Release
+
+# Push a tag v<version> (`just tag`) to release. The workflow checks that the tag matches
+# typst.toml, stages and checks the package, publishes a GitHub release with the staged
+# package attached and, when the UNIVERSE_TOKEN secret is set, opens the pull request to
+# typst/packages. UNIVERSE_TOKEN is a personal access token that can push to your fork of
+# typst/packages and open pull requests there (classic: `public_repo`; fine-grained:
+# contents and pull requests on the fork, plus access to typst/packages for the PR).
+# Without the secret the workflow stops after the GitHub release; run `just release` locally.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: typst-community/setup-typst@v4
+
+      - uses: extractions/setup-just@v2
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install typst-package-check
+        run: cargo install --locked typst-package-check
+
+      - name: The tag is the version in typst.toml
+        run: |
+          version=$(sed -n 's/^version *= *"\(.*\)"/\1/p' typst.toml | head -1)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "tag $GITHUB_REF_NAME does not match typst.toml version $version" >&2
+            exit 1
+          fi
+
+      - name: Stage and check the package
+        run: just check
+
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          name=$(sed -n 's/^name *= *"\(.*\)"/\1/p' typst.toml | head -1)
+          version=${GITHUB_REF_NAME#v}
+          (cd build/packages/preview/$name && zip -qr "$GITHUB_WORKSPACE/$name-$version.zip" "$version")
+          gh release create "$GITHUB_REF_NAME" "$name-$version.zip" \
+            --title "$name $version" --generate-notes
+
+      - name: Pull request to typst/packages
+        env:
+          UNIVERSE_TOKEN: ${{ secrets.UNIVERSE_TOKEN }}
+        run: |
+          if [ -z "$UNIVERSE_TOKEN" ]; then
+            echo "UNIVERSE_TOKEN is not set: skipping the pull request (run 'just release' locally)."
+            exit 0
+          fi
+          export GH_TOKEN="$UNIVERSE_TOKEN"
+          gh auth setup-git
+          git config --global user.name "$GITHUB_ACTOR"
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          just release

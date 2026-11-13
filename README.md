@@ -6,15 +6,17 @@ A comprehensive, extensible Typst template for theses and dissertations at the U
 
 Example output PDF generated with this template: [usp-example.pdf](https://github.com/andrader/usp-thesis-typst-template/blob/bc838c7d272bc1e3544a78fa0d8e1155db160622/examples/usp-example.pdf)
 
+<!-- repo-only: these previews are not part of the Universe package -->
 <p>
-  <img src="examples/img/page-2.png" alt="Title page" width="19%">
-  <img src="examples/img/page-10.png" alt="Resumo" width="19%">
-  <img src="examples/img/page-14.png" alt="Table of contents" width="19%">
-  <img src="examples/img/page-16.png" alt="A chapter opening" width="19%">
-  <img src="examples/img/page-19.png" alt="References" width="19%">
+  <img src="examples/img/page-2.png" alt="Title page of the example thesis, with author, title, programme and advisor" width="19%">
+  <img src="examples/img/page-10.png" alt="Resumo page of the example thesis, with the abstract text" width="19%">
+  <img src="examples/img/page-14.png" alt="Table of contents of the example thesis, with dotted leaders and page numbers" width="19%">
+  <img src="examples/img/page-16.png" alt="Opening page of a chapter, with the chapter number and title above the text" width="19%">
+  <img src="examples/img/page-19.png" alt="Bibliography page of the example thesis in the IME-USP author-date style" width="19%">
 </p>
 
 Pages of `examples/usp-example.typ`: title page, abstract, table of contents, a chapter and the references. Regenerate them with `typst compile --root . --pages N --ppi 110 examples/usp-example.typ examples/img/page-N.png`.
+<!-- /repo-only -->
 
 ## Features
 - **Official Layout**: Correct margins (3cm/2cm), A4 size, and 1.5 line spacing.
@@ -231,6 +233,18 @@ ln -sfn $PWD ~/Library/Application\ Support/typst/packages/preview/modern-usp-th
 ```
 
 Then `typst init @preview/modern-usp-thesis:0.1.0` uses your local copy. Run `just test` to compile the files in `examples/`.
+
+<!-- repo-only: the release flow is for maintainers -->
+## Releasing
+
+This repository is the source of truth; the copy in `typst/packages` is generated from it and never edited by hand. To release:
+
+1. Bump `version` in `typst.toml` and commit.
+2. `just check` stages the package in `build/packages/` (the `exclude` list of `typst.toml` applies, imports of the package are set to the new version), compiles its template and runs `typst-package-check`.
+3. `just tag` tags the commit `v<version>` and pushes the tag. The `Release` workflow then publishes a GitHub release and, if the `UNIVERSE_TOKEN` secret is set, opens the pull request to `typst/packages`. Without the secret, run `just release` locally (needs `gh` logged in).
+
+A merged Universe version is immutable: a fix is a new version.
+<!-- /repo-only -->
 
 ## License
 

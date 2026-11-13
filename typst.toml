@@ -21,7 +21,7 @@ keywords = [
 categories = ["thesis", "paper"]
 disciplines = ["mathematics", "computer-science", "engineering"]
 compiler = "0.13.0"
-exclude = ["/examples/", "/justfile"]
+exclude = ["/examples/", "/justfile", "/scripts/", "/.github/", "/.gitignore", "/build/"]
 
 [template]
 path = "src/template"
