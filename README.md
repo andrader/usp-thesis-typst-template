@@ -6,6 +6,16 @@ A comprehensive, extensible Typst template for theses and dissertations at the U
 
 Example output PDF generated with this template: [usp-example.pdf](https://github.com/andrader/usp-thesis-typst-template/blob/bc838c7d272bc1e3544a78fa0d8e1155db160622/examples/usp-example.pdf)
 
+<p>
+  <img src="examples/img/page-2.png" alt="Title page" width="19%">
+  <img src="examples/img/page-10.png" alt="Resumo" width="19%">
+  <img src="examples/img/page-14.png" alt="Table of contents" width="19%">
+  <img src="examples/img/page-16.png" alt="A chapter opening" width="19%">
+  <img src="examples/img/page-19.png" alt="References" width="19%">
+</p>
+
+Pages of `examples/usp-example.typ`: title page, abstract, table of contents, a chapter and the references. Regenerate them with `typst compile --root . --pages N --ppi 110 examples/usp-example.typ examples/img/page-N.png`.
+
 ## Features
 - **Official Layout**: Correct margins (3cm/2cm), A4 size, and 1.5 line spacing.
 - **Automated Elements**: Generates Cover, Title Page, Approval Sheet, and Abstracts.
