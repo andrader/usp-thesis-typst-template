@@ -12,11 +12,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: typst-community/setup-typst@v4
+      - uses: typst-community/setup-typst@v5
 
-      - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v4
 
       - uses: Swatinem/rust-cache@v2
 
