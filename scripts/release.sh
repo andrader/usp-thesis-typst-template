@@ -56,7 +56,7 @@ check() {
       exit 1
     fi
   else
-    echo "typst-package-check not installed, skipped (cargo install typst-package-check)"
+    echo "typst-package-check not installed, skipped (cargo install --git https://github.com/typst/package-check typst-package-check)"
   fi
 }
 

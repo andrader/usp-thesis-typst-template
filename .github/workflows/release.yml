@@ -30,7 +30,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: Install typst-package-check
-        run: cargo install --locked typst-package-check
+        run: cargo install --locked --git https://github.com/typst/package-check typst-package-check
 
       - name: The tag is the version in typst.toml
         run: |
